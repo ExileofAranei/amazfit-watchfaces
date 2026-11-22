@@ -33,3 +33,5 @@ npm run preview -w faces/<name>   # QR-код для установки на ч�
 | Каталог | Описание |
 |---|---|
 | [faces/dm-replica](faces/dm-replica) | Копия циферблата DM (автор larrabee777) для Active Max. См. README внутри. |
+
+Установка на часы и симулятор: [docs/INSTALL.md](docs/INSTALL.md).
