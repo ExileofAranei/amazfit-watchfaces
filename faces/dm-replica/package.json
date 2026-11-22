@@ -1,0 +1,17 @@
+{
+  "name": "@wf/face-dm-replica",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "assets": "wf assets .",
+    "bundle": "wf bundle .",
+    "build": "wf build .",
+    "preview": "wf preview .",
+    "dev": "wf dev ."
+  },
+  "dependencies": {
+    "@wf/core": "*",
+    "@wf/tooling": "*"
+  }
+}

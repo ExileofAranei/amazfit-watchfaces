@@ -1,0 +1,8 @@
+{
+  "name": "@wf/core",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Reusable Zepp OS watchface components (TypeScript, bundled by esbuild)",
+  "exports": { ".": "./src/index.ts" }
+}
