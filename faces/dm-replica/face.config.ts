@@ -2,7 +2,7 @@ import { defineFace } from '@wf/tooling'
 import { layout } from './src/layout.ts'
 
 const t = layout.time
-const digitW = (h: number) => Math.round((182 * h) / 289)
+const digitW = (h: number) => Math.round((186 * h) / 295)
 
 /** Preview: "21:05" on black, 324×324 (Active Max watchface preview size per device list). */
 const previewDigits = ['2', '1', 'colon', '0', '5']
@@ -10,7 +10,7 @@ const PH = 96
 let px = 30
 const previewItems = previewDigits.map((d) => {
   const item = { svg: `art/time/normal/${d}.svg`, x: px, y: (324 - PH) / 2, height: PH }
-  px += (d === 'colon' ? Math.round((70 * PH) / 289) : digitW(PH)) + 6
+  px += (d === 'colon' ? Math.round((70 * PH) / 295) : digitW(PH)) + 6
   return item
 })
 
