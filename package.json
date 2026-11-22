@@ -17,6 +17,7 @@
   },
   "devDependencies": {
     "@resvg/resvg-js": "2.6.2",
+    "@types/fontkit": "^2.0.9",
     "@types/node": "^24.19.2",
     "@zeppos/zeus-cli": "1.10.2",
     "esbuild": "0.28.2",

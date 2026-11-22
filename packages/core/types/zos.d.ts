@@ -37,6 +37,32 @@ declare module '@zos/ui' {
     readonly FILL_RECT: WidgetType
     readonly TEXT: WidgetType
     readonly IMG_TIME: WidgetType
+    readonly TEXT_IMG: WidgetType
+    readonly IMG_DATE: WidgetType
+    readonly IMG_WEEK: WidgetType
+    readonly IMG_LEVEL: WidgetType
+    readonly IMG_STATUS: WidgetType
+    readonly IMG_CLICK: WidgetType
+  }
+
+  /** docs: watchface/api/hmUI/widget/data_type (subset we use) */
+  const data_type: {
+    readonly BATTERY: number
+    readonly STEP: number
+    readonly CAL: number
+    readonly HEART: number
+    readonly DISTANCE: number
+    readonly WEATHER: number
+    readonly WEATHER_CURRENT: number
+    readonly ALARM_CLOCK: number
+  }
+
+  /** docs: watchface/api/hmUI/widget/IMG_STATUS */
+  const system_status: {
+    readonly CLOCK: number
+    readonly DISCONNECT: number
+    readonly DISTURB: number
+    readonly LOCK: number
   }
 
   interface BaseOptions {
@@ -89,13 +115,114 @@ declare module '@zos/ui' {
     second_align?: number
   }
 
-  function createWidget(type: WidgetType, options: FillRectOptions | ImgOptions | ImgTimeOptions): Widget
+  /** docs: watchface/api/hmUI/widget/TEXT_IMG */
+  interface TextImgOptions extends BaseOptions {
+    x: number
+    y: number
+    w?: number
+    h?: number
+    font_array: string[]
+    type?: number
+    text?: string
+    unit_sc?: string
+    unit_en?: string
+    unit_tc?: string
+    imperial_unit_sc?: string
+    imperial_unit_en?: string
+    imperial_unit_tc?: string
+    negative_image?: string
+    dot_image?: string
+    /** sample 1.0/basketball */
+    invalid_image?: string
+    h_space?: number
+    align_h?: number
+  }
+
+  /** docs: watchface/api/hmUI/widget/IMG_DATE (prefixes year_/month_/day_) */
+  interface ImgDateOptions extends BaseOptions {
+    month_startX?: number
+    month_startY?: number
+    month_align?: number
+    month_space?: number
+    month_zero?: 0 | 1
+    month_follow?: 0 | 1
+    month_is_character?: boolean
+    month_en_array?: string[]
+    month_sc_array?: string[]
+    month_tc_array?: string[]
+    day_startX?: number
+    day_startY?: number
+    day_align?: number
+    day_space?: number
+    day_zero?: 0 | 1
+    day_follow?: 0 | 1
+    day_is_character?: boolean
+    day_en_array?: string[]
+    day_sc_array?: string[]
+    day_tc_array?: string[]
+  }
+
+  /** docs: watchface/api/hmUI/widget/IMG_WEEK — w/h come from the images */
+  interface ImgWeekOptions extends BaseOptions {
+    x: number
+    y: number
+    week_en: string[]
+    week_tc: string[]
+    week_sc: string[]
+  }
+
+  /** docs: watchface/api/hmUI/widget/IMG_LEVEL ; `type` per sample 1.0/color-world (WEATHER) */
+  interface ImgLevelOptions extends BaseOptions {
+    x: number
+    y: number
+    w?: number
+    h?: number
+    image_array: string[]
+    image_length: number
+    type?: number
+    level?: number
+  }
+
+  /** docs: watchface/api/hmUI/widget/IMG_STATUS */
+  interface ImgStatusOptions extends BaseOptions {
+    x: number
+    y: number
+    w?: number
+    h?: number
+    type: number
+    src: string
+  }
+
+  /** docs: watchface/api/hmUI/widget/IMG_CLICK — `type` is the data_type whose app opens */
+  interface ImgClickOptions extends BaseOptions {
+    x: number
+    y: number
+    w: number
+    h: number
+    src: string
+    type: number
+  }
+
+  type AnyOptions =
+    | FillRectOptions
+    | ImgOptions
+    | ImgTimeOptions
+    | TextImgOptions
+    | ImgDateOptions
+    | ImgWeekOptions
+    | ImgLevelOptions
+    | ImgStatusOptions
+    | ImgClickOptions
+
+  function createWidget(type: WidgetType, options: AnyOptions): Widget
 
   const ui: {
     createWidget: typeof createWidget
     widget: typeof widget
     show_level: typeof show_level
     align: typeof align
+    data_type: typeof data_type
+    system_status: typeof system_status
   }
   export default ui
 }

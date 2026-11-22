@@ -8,7 +8,8 @@
     "bundle": "wf bundle .",
     "build": "wf build .",
     "preview": "wf preview .",
-    "dev": "wf dev ."
+    "dev": "wf dev .",
+    "mock": "wf mock ."
   },
   "dependencies": {
     "@wf/core": "*",

@@ -1,11 +1,38 @@
 /**
- * Prototype layout in 480×480 design pixels. Final coordinates come from the designer's mockup (brief 001).
- * Digit art: 186×295 (geometry fitted to the DM reference, IoU 0.96), colon 70×295 (38 + 16 px padding each side).
+ * Layout in 480×480 design px, measured from the DM reference screenshot (dial circle fitted, scale 0.825).
+ * Boxes are ink bounds of the original; text widgets are centred on `cx`.
+ * Digit art: 186×295 (geometry fitted to the reference), colon 78×295.
  */
 export const layout = {
   time: {
-    normal: { height: 110, x: 52, y: 185, space: 6 },
-    seconds: { height: 48, x: 386, y: 247, space: 3 },
-    aod: { height: 88, x: 106, y: 196, space: 5 },
+    normal: { height: 108, x: 49.3, y: 187.5, space: 6.5 },
+    seconds: { height: 47.4, x: 390.8, y: 246.9, space: 7.3 },
+    aod: { height: 76.5, x: 128.2, y: 207.75, space: 2.6 },
   },
+  month: { cx: 241.5, y: 31.6, cap: 16.5, boxW: 220 },
+  weekday: { cx: 241.5, y: 131.4, cap: 16.5, boxW: 260 },
+  day: { cx: 241.9, y: 70.3, cap: 38 },
+  temperature: { cx: 121, y: 78.6, cap: 19.8, w: 90 },
+  weather: { x: 329.4, y: 61.3, h: 44.6 },
+  battery: { cx: 424.3, y: 204, cap: 19.8, w: 90 },
+  bolt: { x: 407.8, y: 181.7, h: 17.3 },
+  alarm: { x: 11.7, y: 228.7, h: 25.6 },
+  icons: {
+    flame: { cx: 111.1, y: 332.7, h: 19 },
+    steps: { cx: 242.3, y: 331, h: 25.6 },
+    heart: { cx: 372.3, y: 334.3, h: 19 },
+  },
+  calories: { cx: 109.9, y: 363.2, cap: 19.8, w: 110 },
+  heart: { cx: 373.1, y: 363.2, cap: 19.8, w: 90 },
+  steps: { cx: 240.7, y: 380.5, cap: 27.2, w: 160 },
+  distance: { cx: 243.6, y: 434.2, cap: 19.8, w: 140 },
+  aod: {
+    date: { cx: 240, y: 69, cap: 17, boxW: 200 },
+    weekday: { cx: 240, y: 99, cap: 13, boxW: 200 },
+    icons: { flame: { cx: 128, y: 340 }, steps: { cx: 240, y: 340 }, heart: { cx: 352, y: 340 }, h: 18 },
+    numbers: { y: 371, cap: 16, w: 100, calories: 128, steps: 240, heart: 352 },
+    battery: { cx: 249, y: 424, cap: 12, w: 80 },
+    bolt: { x: 214, y: 424, h: 12 },
+  },
+  colors: { white: '#F6F5FC', red: '#E04B33', aod: '#B9B9BE' },
 } as const

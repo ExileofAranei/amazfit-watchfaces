@@ -1,0 +1,224 @@
+{
+  "family": "Segment Cyr",
+  "source": "Orbitron-VF.ttf",
+  "weight": 750,
+  "wght": 750,
+  "unitsPerEm": 1000,
+  "capHeight": 720,
+  "ascent": 1011,
+  "descent": -243,
+  "fontBaselineY": 0,
+  "svgBaselineY": 1011,
+  "pathCoordinates": "font units, y up",
+  "latinAliases": {
+    "А": "A",
+    "В": "B",
+    "Е": "E",
+    "К": "K",
+    "М": "M",
+    "Н": "H",
+    "О": "O",
+    "Р": "P",
+    "С": "C",
+    "Т": "T",
+    "Х": "X"
+  },
+  "glyphs": {
+    "Б": {
+      "unicode": "U+0411",
+      "advanceWidth": 832,
+      "leftSideBearing": 58,
+      "rightSideBearing": 54,
+      "bounds": [
+        58.0,
+        0.0,
+        778.0,
+        720.0
+      ],
+      "fontBaselineY": 0,
+      "svgBaselineY": 1011
+    },
+    "Г": {
+      "unicode": "U+0413",
+      "advanceWidth": 676,
+      "leftSideBearing": 58,
+      "rightSideBearing": 8,
+      "bounds": [
+        58.0,
+        0.0,
+        668.0,
+        720.0
+      ],
+      "fontBaselineY": 0,
+      "svgBaselineY": 1011
+    },
+    "Д": {
+      "unicode": "U+0414",
+      "advanceWidth": 946,
+      "leftSideBearing": 41,
+      "rightSideBearing": 39,
+      "bounds": [
+        41.0,
+        -87.0,
+        907.0,
+        720.0
+      ],
+      "fontBaselineY": 0,
+      "svgBaselineY": 1011
+    },
+    "И": {
+      "unicode": "U+0418",
+      "advanceWidth": 832,
+      "leftSideBearing": 56,
+      "rightSideBearing": 56,
+      "bounds": [
+        56.0,
+        0.0,
+        776.0,
+        720.0
+      ],
+      "fontBaselineY": 0,
+      "svgBaselineY": 1011
+    },
+    "Й": {
+      "unicode": "U+0419",
+      "advanceWidth": 832,
+      "leftSideBearing": 56,
+      "rightSideBearing": 56,
+      "bounds": [
+        56.0,
+        0.0,
+        776.0,
+        943.0
+      ],
+      "fontBaselineY": 0,
+      "svgBaselineY": 1011
+    },
+    "Л": {
+      "unicode": "U+041B",
+      "advanceWidth": 802,
+      "leftSideBearing": 50,
+      "rightSideBearing": 56,
+      "bounds": [
+        50.0,
+        0.0,
+        746.0,
+        720.0
+      ],
+      "fontBaselineY": 0,
+      "svgBaselineY": 1011
+    },
+    "П": {
+      "unicode": "U+041F",
+      "advanceWidth": 834,
+      "leftSideBearing": 57,
+      "rightSideBearing": 57,
+      "bounds": [
+        57.0,
+        0.0,
+        777.0,
+        720.0
+      ],
+      "fontBaselineY": 0,
+      "svgBaselineY": 1011
+    },
+    "Ф": {
+      "unicode": "U+0424",
+      "advanceWidth": 972,
+      "leftSideBearing": 54,
+      "rightSideBearing": 54,
+      "bounds": [
+        54.0,
+        0.0,
+        918.0,
+        720.0
+      ],
+      "fontBaselineY": 0,
+      "svgBaselineY": 1011
+    },
+    "Ц": {
+      "unicode": "U+0426",
+      "advanceWidth": 930,
+      "leftSideBearing": 54,
+      "rightSideBearing": 51,
+      "bounds": [
+        54.0,
+        -88.0,
+        879.0,
+        720.0
+      ],
+      "fontBaselineY": 0,
+      "svgBaselineY": 1011
+    },
+    "Ч": {
+      "unicode": "U+0427",
+      "advanceWidth": 807,
+      "leftSideBearing": 53,
+      "rightSideBearing": 55,
+      "bounds": [
+        53.0,
+        0.0,
+        752.0,
+        720.0
+      ],
+      "fontBaselineY": 0,
+      "svgBaselineY": 1011
+    },
+    "Ь": {
+      "unicode": "U+042C",
+      "advanceWidth": 832,
+      "leftSideBearing": 56,
+      "rightSideBearing": 56,
+      "bounds": [
+        56.0,
+        0.0,
+        776.0,
+        720.0
+      ],
+      "fontBaselineY": 0,
+      "svgBaselineY": 1011
+    },
+    "Ю": {
+      "unicode": "U+042E",
+      "advanceWidth": 1088,
+      "leftSideBearing": 57,
+      "rightSideBearing": 54,
+      "bounds": [
+        57.0392,
+        0.0,
+        1034.0,
+        720.0
+      ],
+      "fontBaselineY": 0,
+      "svgBaselineY": 1011
+    },
+    "Я": {
+      "unicode": "U+042F",
+      "advanceWidth": 832,
+      "leftSideBearing": 56,
+      "rightSideBearing": 56,
+      "bounds": [
+        56.0,
+        0.0,
+        776.0,
+        719.0
+      ],
+      "fontBaselineY": 0,
+      "svgBaselineY": 1011
+    },
+    "У": {
+      "unicode": "U+0423",
+      "advanceWidth": 821,
+      "leftSideBearing": 51,
+      "rightSideBearing": 31,
+      "bounds": [
+        51.0,
+        0.0,
+        790.0,
+        720.0
+      ],
+      "fontBaselineY": 0,
+      "svgBaselineY": 1011
+    }
+  }
+}

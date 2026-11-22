@@ -5,13 +5,15 @@
  *   bundle  – esbuild TS entries → app.js, watchface/index.js
  *   build   – assets + bundle + `zeus build` (→ dist/*.zab)
  *   preview / dev – assets + bundle + `zeus preview` / `zeus dev`
+ *   mock    – assets + bundle + offline preview PNG (normal | AOD) → mock/preview.png
  */
 import { build as esbuild } from 'esbuild'
 import { spawnSync } from 'node:child_process'
 import { rmSync } from 'node:fs'
 import { join, resolve } from 'node:path'
 import { pathToFileURL } from 'node:url'
-import { renderComposite, renderSet } from './assets.ts'
+import { renderComposite, renderSet, renderTexts } from './assets.ts'
+import { mock } from './mock.ts'
 import type { FaceConfig } from './types.ts'
 
 const [cmd = 'build', faceArg = '.'] = process.argv.slice(2)
@@ -22,7 +24,8 @@ async function assets(): Promise<void> {
   const outRoot = join(faceDir, 'assets', config.assetsDir)
   rmSync(join(faceDir, 'assets'), { recursive: true, force: true })
   let n = 0
-  for (const set of config.assets) n += renderSet(faceDir, outRoot, set).length
+  for (const set of config.assets) n += renderSet(faceDir, outRoot, set)
+  for (const set of config.texts ?? []) n += renderTexts(faceDir, outRoot, set)
   for (const c of config.composites ?? []) (renderComposite(faceDir, outRoot, c), n++)
   console.log(`[wf] assets: ${n} png → assets/${config.assetsDir}`)
 }
@@ -51,4 +54,9 @@ await assets()
 if (cmd === 'assets') process.exit(0)
 await bundle()
 if (cmd === 'bundle') process.exit(0)
+if (cmd === 'mock') {
+  await mock(faceDir, join(faceDir, 'assets', config.assetsDir), join(faceDir, 'mock', 'preview.png'), undefined, process.argv.includes('--taps'))
+  console.log('[wf] mock → mock/preview.png')
+  process.exit(0)
+}
 if (cmd === 'build' || cmd === 'preview' || cmd === 'dev') zeus(cmd)

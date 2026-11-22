@@ -4,6 +4,13 @@
   "private": true,
   "type": "module",
   "description": "Build tooling: SVG→PNG asset pipeline, TS bundling, zeus build wrapper",
-  "bin": { "wf": "./src/cli.ts" },
-  "exports": { ".": "./src/index.ts" }
+  "bin": {
+    "wf": "./src/cli.ts"
+  },
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "fontkit": "^2.0.4"
+  }
 }

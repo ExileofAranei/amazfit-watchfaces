@@ -6,3 +6,4 @@ faces/*/app.js
 faces/*/watchface/
 .zeus/
 *.zab
+faces/*/mock/
