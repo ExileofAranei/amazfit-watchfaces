@@ -1,4 +1,5 @@
 import ui, { getImageInfo, prop, deleteWidget } from '@zos/ui'
+import { getLanguage } from '@zos/settings'
 import { Step, Time } from '@zos/sensor'
 import {
   createBackground,
@@ -14,6 +15,8 @@ import {
 } from '@wf/core'
 import { layout as L } from './layout.ts'
 
+type Language = 'ru' | 'en'
+const RUSSIAN_LANGUAGE_CODE = 4
 const NORMAL = ui.show_level.ONLY_NORMAL
 const AOD = ui.show_level.ONAL_AOD
 
@@ -30,10 +33,10 @@ const numberBox = (cx: number, capTop: number, cap: number, w: number) => ({
 /** Tracking in px for a cap height, from font units (UPM 1000, cap 720). */
 const track = (units: number, cap: number): number => (units * cap) / 720
 
-function buildNormal(): void {
+function buildNormal(lang: Language): void {
   const W = 'images/font/white'
 
-  createMonthName({ x: centred(L.month.cx, L.month.boxW), y: L.month.y - PAD, dir: 'images/text/month', showLevel: NORMAL })
+  createMonthName({ x: centred(L.month.cx, L.month.boxW), y: L.month.y - PAD, dir: `images/text/${lang}/month`, showLevel: NORMAL })
   createDay({ x: L.day.cx - 41.4, y: L.day.y - PAD, font: 'images/font/date', space: track(-20, L.day.cap), showLevel: NORMAL })
   createNumber({
     box: numberBox(L.temperature.cx, L.temperature.y, L.temperature.cap, L.temperature.w),
@@ -45,7 +48,7 @@ function buildNormal(): void {
     showLevel: NORMAL,
   })
   createWeatherIcon({ x: L.weather.x, y: L.weather.y, dir: 'images/weather', showLevel: NORMAL })
-  createWeekday({ x: centred(L.weekday.cx, L.weekday.boxW), y: L.weekday.y - PAD, dir: 'images/text/weekday', showLevel: NORMAL })
+  createWeekday({ x: centred(L.weekday.cx, L.weekday.boxW), y: L.weekday.y - PAD, dir: `images/text/${lang}/weekday`, showLevel: NORMAL })
 
   createImage({ x: L.bolt.x, y: L.bolt.y, src: 'images/icons/bolt.png', showLevel: NORMAL })
   createNumber({
@@ -70,15 +73,15 @@ function buildNormal(): void {
     type: ui.data_type.DISTANCE,
     font: W,
     dot: `${W}/dot.png`,
-    unit: `${W}/km.png`,
+    unit: `images/text/${lang}/km.png`,
     space: track(0, L.distance.cap),
     showLevel: NORMAL,
   })
 }
 
-function buildAod(): void {
+function buildAod(lang: Language): void {
   const A = L.aod
-  createWeekday({ x: centred(A.weekday.cx, A.weekday.boxW), y: A.weekday.y - PAD, dir: 'images/aod/text/weekday', showLevel: AOD })
+  createWeekday({ x: centred(A.weekday.cx, A.weekday.boxW), y: A.weekday.y - PAD, dir: `images/aod/text/${lang}/weekday`, showLevel: AOD })
 
   const I = A.icons
   createImage({ x: centred(I.flame.cx, I.flame.w), y: I.flame.y, src: 'images/aod/icons/flame.png', showLevel: AOD })
@@ -123,7 +126,7 @@ function imageRow(cx: number, y: number, gap: number, level: number) {
   }
 }
 
-function buildLiveRows() {
+function buildLiveRows(lang: Language) {
   const steps = new Step()
   const normal = imageRow(L.steps.cx, Math.round(L.steps.y - PAD), 0, NORMAL)
   const aod = imageRow(L.aod.numbers.steps, L.aod.numbers.y - PAD, 0, AOD)
@@ -134,10 +137,13 @@ function buildLiveRows() {
   }
   const time = new Time()
   const date = imageRow(L.aod.date.cx, L.aod.date.y - PAD, 6, AOD)
-  const updateDate = () => date([
-    `images/aod/font/date/${time.getDate()}.png`,
-    `images/aod/text/month/${time.getMonth()}.png`,
-  ])
+  const updateDate = () => {
+    const day = String(time.getDate())
+    const dayLabel = lang === 'ru' ? day.padStart(2, '0') : day
+    const dayImage = `images/aod/font/date/${dayLabel}.png`
+    const monthImage = `images/aod/text/${lang}/month/${time.getMonth()}.png`
+    date(lang === 'ru' ? [dayImage, monthImage] : [monthImage, dayImage])
+  }
   updateDate()
   updateSteps()
   time.onPerDay(updateDate)
@@ -174,9 +180,10 @@ WatchFace({
       },
       { digitsDir: 'images/time/aod', x: aod.x, y: aod.y, space: aod.space, showLevel: AOD },
     ])
-    buildNormal()
-    buildAod()
-    releaseRows = buildLiveRows()
+    const lang = getLanguage() === RUSSIAN_LANGUAGE_CODE ? 'ru' : 'en'
+    buildNormal(lang)
+    buildAod(lang)
+    releaseRows = buildLiveRows(lang)
     buildTapZones()
   },
   onDestroy() { releaseRows?.() },

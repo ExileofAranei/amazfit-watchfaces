@@ -21,9 +21,17 @@ const style = (wght: number, cap: number, color: string, tracking = 0, scaleX = 
 })
 const SX = { label: 0.935, date: 0.96, metric: 0.958, steps: 0.946 }
 
-const MONTHS = ['ЯНВАРЬ', 'ФЕВРАЛЬ', 'МАРТ', 'АПРЕЛЬ', 'МАЙ', 'ИЮНЬ', 'ИЮЛЬ', 'АВГУСТ', 'СЕНТЯБРЬ', 'ОКТЯБРЬ', 'НОЯБРЬ', 'ДЕКАБРЬ']
-const MONTHS_GEN = ['ЯНВАРЯ', 'ФЕВРАЛЯ', 'МАРТА', 'АПРЕЛЯ', 'МАЯ', 'ИЮНЯ', 'ИЮЛЯ', 'АВГУСТА', 'СЕНТЯБРЯ', 'ОКТЯБРЯ', 'НОЯБРЯ', 'ДЕКАБРЯ']
-const WEEKDAYS = ['ПОНЕДЕЛЬНИК', 'ВТОРНИК', 'СРЕДА', 'ЧЕТВЕРГ', 'ПЯТНИЦА', 'СУББОТА', 'ВОСКРЕСЕНЬЕ']
+const RU_MONTHS = ['ЯНВАРЬ', 'ФЕВРАЛЬ', 'МАРТ', 'АПРЕЛЬ', 'МАЙ', 'ИЮНЬ', 'ИЮЛЬ', 'АВГУСТ', 'СЕНТЯБРЬ', 'ОКТЯБРЬ', 'НОЯБРЬ', 'ДЕКАБРЬ']
+const RU_MONTHS_GEN = ['ЯНВАРЯ', 'ФЕВРАЛЯ', 'МАРТА', 'АПРЕЛЯ', 'МАЯ', 'ИЮНЯ', 'ИЮЛЯ', 'АВГУСТА', 'СЕНТЯБРЯ', 'ОКТЯБРЯ', 'НОЯБРЯ', 'ДЕКАБРЯ']
+const RU_WEEKDAYS = ['ПОНЕДЕЛЬНИК', 'ВТОРНИК', 'СРЕДА', 'ЧЕТВЕРГ', 'ПЯТНИЦА', 'СУББОТА', 'ВОСКРЕСЕНЬЕ']
+
+const EN_MONTHS = ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE', 'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER']
+const EN_WEEKDAYS = ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY']
+
+const locales = [
+  { lang: 'ru', months: RU_MONTHS, dateMonths: RU_MONTHS_GEN, weekdays: RU_WEEKDAYS, km: 'КМ' },
+  { lang: 'en', months: EN_MONTHS, dateMonths: EN_MONTHS, weekdays: EN_WEEKDAYS, km: 'km' },
+]
 
 const numbered = (words: string[]): Record<string, string> => Object.fromEntries(words.map((w, i) => [String(i + 1), w]))
 const digits = (extra: Record<string, string> = {}): Record<string, string> => ({
@@ -34,18 +42,22 @@ const digits = (extra: Record<string, string> = {}): Record<string, string> => (
 /** Digit font folders: 0–9 + named symbols used as unit / negative / dot images. */
 const SYMBOLS = { minus: '-', dot: '.', percent: '%', degree: '°' }
 
+// Use the displayed day as the filename, sharing days 10–31 across both locales.
+const dayLabels = Array.from({ length: 31 }, (_, i) => String(i + 1))
+const dateLabels = [...dayLabels, ...dayLabels.slice(0, 9).map(day => day.padStart(2, '0'))]
+
 const texts: TextSet[] = [
-  // normal
-  { to: 'images/text/month', style: style(750, layout.month.cap, white, 0, SX.label), items: numbered(MONTHS), padBottom: 3, uniformWidth: 'center', boxWidth: layout.month.boxW },
-  { to: 'images/text/weekday', style: style(750, layout.weekday.cap, white, 0, SX.label), items: numbered(WEEKDAYS), padBottom: 3, uniformWidth: 'center', boxWidth: layout.weekday.boxW },
+  ...locales.flatMap(({ lang, months, dateMonths, weekdays, km }): TextSet[] => [
+    { to: `images/text/${lang}/month`, style: style(750, layout.month.cap, white, 0, SX.label), items: numbered(months), padBottom: 3, uniformWidth: 'center', boxWidth: layout.month.boxW },
+    { to: `images/text/${lang}/weekday`, style: style(750, layout.weekday.cap, white, 0, SX.label), items: numbered(weekdays), padBottom: 3, uniformWidth: 'center', boxWidth: layout.weekday.boxW },
+    { to: `images/text/${lang}`, style: style(850, 10, white, 80, SX.metric), items: { km }, padTop: 10.8 },
+    { to: `images/aod/text/${lang}/month`, style: style(750, layout.aod.date.cap, grey, 0, SX.label), items: numbered(dateMonths), padBottom: 3 },
+    { to: `images/aod/text/${lang}/weekday`, style: style(750, layout.aod.weekday.cap, grey, 0, SX.label), items: numbered(weekdays), padBottom: 3, uniformWidth: 'center', boxWidth: layout.aod.weekday.boxW },
+  ]),
   { to: 'images/font/date', style: style(400, layout.day.cap, red, -20, SX.date), items: digits() },
   { to: 'images/font/white', style: style(450, 19.8, white, 0, SX.metric), items: digits(SYMBOLS) },
   { to: 'images/font/steps', style: style(450, layout.steps.cap, red, -5, SX.steps), items: digits() },
-  { to: 'images/font/white', style: style(850, 10, white, 80, SX.metric), items: { km: 'КМ' }, padTop: 10.8 },
-  // AOD
-  { to: 'images/aod/text/month', style: style(750, layout.aod.date.cap, grey, 0, SX.label), items: numbered(MONTHS_GEN), padBottom: 3 },
-  { to: 'images/aod/text/weekday', style: style(750, layout.aod.weekday.cap, grey, 0, SX.label), items: numbered(WEEKDAYS), padBottom: 3, uniformWidth: 'center', boxWidth: layout.aod.weekday.boxW },
-  { to: 'images/aod/font/date', style: style(400, layout.aod.date.cap, grey, -20, SX.date), items: Object.fromEntries(Array.from({ length: 31 }, (_, i) => [i + 1, String(i + 1).padStart(2, '0')])) },
+  { to: 'images/aod/font/date', style: style(400, layout.aod.date.cap, grey, -20, SX.date), items: Object.fromEntries(dateLabels.map(day => [day, day])) },
   { to: 'images/aod/font/num', style: style(450, layout.aod.numbers.cap, grey, 0, SX.metric), items: digits(SYMBOLS) },
   { to: 'images/aod/font/small', style: style(450, layout.aod.battery.cap, grey, 0, SX.metric), items: digits(SYMBOLS) },
 ]

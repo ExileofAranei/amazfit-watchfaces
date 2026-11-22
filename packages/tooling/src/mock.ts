@@ -9,6 +9,8 @@ import { readFileSync, writeFileSync, mkdirSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 
 export interface Sample {
+  /** System language code returned by @zos/settings (4 = ru-RU). */
+  languageCode?: number
   time: [number, number, number]
   day: number
   month: number
@@ -53,7 +55,7 @@ async function record(faceDir: string, assetsRoot: string, sample: Sample): Prom
               ? 'const s = globalThis.__zosSample; export class Step { getCurrent() { return Number(s.values.STEP) } onChange() {} offChange() {} } export class Time { getDate() { return s.day } getMonth() { return s.month } onPerDay() {} }'
             : a.path === '@zos/utils'
               ? 'export const px = (v) => v; export const log = { getLogger: () => ({ log() {}, error() {} }) };'
-              : 'export const getScene = () => 0, SCENE_AOD = 1, SCENE_WATCHFACE = 0; export const getLanguage = () => 4;',
+              : 'export const getScene = () => 0, SCENE_AOD = 1, SCENE_WATCHFACE = 0; export const getLanguage = () => globalThis.__zosSample.languageCode ?? 4;',
           loader: 'js',
         }))
       },
