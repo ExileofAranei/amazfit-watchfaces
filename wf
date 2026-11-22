@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# Docker wrapper — no Node/npm needed on the host.
+#   ./wf login                 – zeus login (prints a URL; paste the callback URL back)
+#   ./wf status                – zeus status
+#   ./wf build   <face>        – faces/<face>/dist/*.zab
+#   ./wf preview <face>        – QR code for the Zepp app (Developer Mode → Scan)
+#   ./wf mock    <face>        – offline preview PNG in faces/<face>/mock/
+#   ./wf typecheck
+#   ./wf sh                    – shell inside the container
+set -euo pipefail
+cd "$(dirname "$0")"
+run() { docker compose run --rm wf "$@"; }
+cmd="${1:-help}"; face="${2:-dm-replica}"
+case "$cmd" in
+  login)     run npx zeus login --no-browser ;;
+  status)    run npx zeus status ;;
+  build|preview|mock|assets|bundle) run npm run "$cmd" -w "faces/$face" ;;
+  typecheck) run npm run typecheck ;;
+  install)   docker compose build && run npm ci --no-audit --no-fund ;;
+  sh)        run bash ;;
+  *)         sed -n '2,10p' "$0" ;;
+esac

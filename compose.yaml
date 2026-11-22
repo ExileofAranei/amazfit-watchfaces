@@ -1,0 +1,18 @@
+services:
+  wf:
+    build: .
+    image: amazfit-watchfaces-tooling
+    working_dir: /work
+    user: "1000:1000"
+    environment:
+      HOME: /home/node
+    stdin_open: true
+    tty: true
+    volumes:
+      - .:/work
+      - node_modules:/work/node_modules
+      - zepp-auth:/home/node/.zepp
+
+volumes:
+  node_modules:
+  zepp-auth:

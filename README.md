@@ -7,14 +7,17 @@ SVG→PNG конвейер ассетов и обёртка над Zeus CLI.
 
 ## Быстрый старт
 
+Через Docker (Node на хосте не нужен):
+
 ```bash
-npm install
-npm run typecheck
-npm run build -w faces/<name>     # → faces/<name>/dist/*.zab
-npm run preview -w faces/<name>   # QR-код для установки на часы через Zepp (нужен `npx zeus login`)
+./wf install            # образ + зависимости
+./wf login              # вход в Zepp Open Platform
+./wf build <face>       # → faces/<face>/dist/*.zab
+./wf preview <face>     # QR-код для установки на часы через Zepp
+./wf mock <face>        # офлайн-превью PNG
 ```
 
-Требования: Node.js ≥ 22. Zeus CLI ставится локально как dev-зависимость.
+Или локально, если Node.js ≥ 22 установлен: `npm install`, затем `npm run build -w faces/<face>` и т. д.
 
 ## Устройство
 

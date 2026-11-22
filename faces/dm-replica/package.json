@@ -4,12 +4,12 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "assets": "wf assets .",
-    "bundle": "wf bundle .",
-    "build": "wf build .",
-    "preview": "wf preview .",
-    "dev": "wf dev .",
-    "mock": "wf mock ."
+    "assets": "node ../../packages/tooling/src/cli.ts assets .",
+    "bundle": "node ../../packages/tooling/src/cli.ts bundle .",
+    "build": "node ../../packages/tooling/src/cli.ts build .",
+    "preview": "node ../../packages/tooling/src/cli.ts preview .",
+    "dev": "node ../../packages/tooling/src/cli.ts dev .",
+    "mock": "node ../../packages/tooling/src/cli.ts mock ."
   },
   "dependencies": {
     "@wf/core": "*",
