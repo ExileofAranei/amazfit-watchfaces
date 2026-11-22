@@ -58,9 +58,9 @@ function buildNormal(): void {
   createStatusIcon({ x: L.alarm.x, y: L.alarm.y, src: 'images/icons/alarm.png', status: ui.system_status.CLOCK, showLevel: NORMAL })
 
   const ic = L.icons
-  createImage({ x: centred(ic.flame.cx, ic.flame.h), y: ic.flame.y, src: 'images/icons/flame.png', showLevel: NORMAL })
-  createImage({ x: centred(ic.steps.cx, ic.steps.h), y: ic.steps.y, src: 'images/icons/steps.png', showLevel: NORMAL })
-  createImage({ x: centred(ic.heart.cx, ic.heart.h), y: ic.heart.y, src: 'images/icons/heart.png', showLevel: NORMAL })
+  createImage({ x: ic.flame.x, y: ic.flame.y, src: 'images/icons/flame.png', showLevel: NORMAL })
+  createImage({ x: ic.steps.x, y: ic.steps.y, src: 'images/icons/steps.png', showLevel: NORMAL })
+  createImage({ x: ic.heart.x, y: ic.heart.y, src: 'images/icons/heart.png', showLevel: NORMAL })
 
   createNumber({ box: numberBox(L.calories.cx, L.calories.y, L.calories.cap, L.calories.w), type: ui.data_type.CAL, font: W, space: track(0, L.calories.cap), showLevel: NORMAL })
   createNumber({ box: numberBox(L.heart.cx, L.heart.y, L.heart.cap, L.heart.w), type: ui.data_type.HEART, font: W, space: track(0, L.heart.cap), showLevel: NORMAL })
@@ -83,10 +83,10 @@ function buildAod(): void {
   createMonthName({ x: dayX + 44.6, y: A.date.y - PAD, dir: 'images/aod/text/month', showLevel: AOD })
   createWeekday({ x: centred(A.weekday.cx, A.weekday.boxW), y: A.weekday.y - PAD, dir: 'images/aod/text/weekday', showLevel: AOD })
 
-  const h = A.icons.h
-  createImage({ x: centred(A.icons.flame.cx, h), y: A.icons.flame.y, src: 'images/aod/icons/flame.png', showLevel: AOD })
-  createImage({ x: centred(A.icons.steps.cx, h), y: A.icons.steps.y, src: 'images/aod/icons/steps.png', showLevel: AOD })
-  createImage({ x: centred(A.icons.heart.cx, h), y: A.icons.heart.y, src: 'images/aod/icons/heart.png', showLevel: AOD })
+  const I = A.icons
+  createImage({ x: centred(I.flame.cx, I.flame.w), y: I.flame.y, src: 'images/aod/icons/flame.png', showLevel: AOD })
+  createImage({ x: centred(I.steps.cx, I.steps.w), y: I.steps.y, src: 'images/aod/icons/steps.png', showLevel: AOD })
+  createImage({ x: centred(I.heart.cx, I.heart.w), y: I.heart.y, src: 'images/aod/icons/heart.png', showLevel: AOD })
 
   const n = A.numbers
   const F = 'images/aod/font/num'
