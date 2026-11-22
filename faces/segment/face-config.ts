@@ -42,6 +42,16 @@ const digits = (extra: Record<string, string> = {}): Record<string, string> => (
 /** Digit font folders: 0–9 + named symbols used as unit / negative / dot images. */
 const SYMBOLS = { minus: '-', dot: '.', percent: '%', degree: '°' }
 
+/**
+ * TEXT_IMG on the watch gives every digit the slot of the widest one, so the narrow Orbitron 1 sat at the
+ * left of its slot and short numbers drifted off-centre. Digits are padded to one width with the ink centred;
+ * the symbols keep their own width.
+ */
+const tabularFont = (to: string, s: TextStyle): TextSet[] => [
+  { to, style: s, items: digits(), uniformWidth: 'center' },
+  { to, style: s, items: SYMBOLS },
+]
+
 // Use the displayed day as the filename, sharing days 10–31 across both locales.
 const dayLabels = Array.from({ length: 31 }, (_, i) => String(i + 1))
 const dateLabels = [...dayLabels, ...dayLabels.slice(0, 9).map(day => day.padStart(2, '0'))]
@@ -55,11 +65,12 @@ const texts: TextSet[] = [
     { to: `images/aod/text/${lang}/weekday`, style: style(750, layout.aod.weekday.cap, grey, 0, SX.label), items: numbered(weekdays), padBottom: 3, uniformWidth: 'center', boxWidth: layout.aod.weekday.boxW },
   ]),
   { to: 'images/font/date', style: style(400, layout.day.cap, red, -20, SX.date), items: digits() },
-  { to: 'images/font/white', style: style(450, 19.8, white, 0, SX.metric), items: digits(SYMBOLS) },
+  ...tabularFont('images/font/white', style(450, 19.8, white, 0, SX.metric)),
   { to: 'images/font/steps', style: style(450, layout.steps.cap, red, -5, SX.steps), items: digits() },
   { to: 'images/aod/font/date', style: style(400, layout.aod.date.cap, grey, -20, SX.date), items: Object.fromEntries(dateLabels.map(day => [day, day])) },
-  { to: 'images/aod/font/num', style: style(450, layout.aod.numbers.cap, grey, 0, SX.metric), items: digits(SYMBOLS) },
-  { to: 'images/aod/font/small', style: style(450, layout.aod.battery.cap, grey, 0, SX.metric), items: digits(SYMBOLS) },
+  { to: 'images/aod/font/steps', style: style(450, layout.aod.numbers.cap, grey, 0, SX.metric), items: digits() },
+  ...tabularFont('images/aod/font/num', style(450, layout.aod.numbers.cap, grey, 0, SX.metric)),
+  ...tabularFont('images/aod/font/small', style(450, layout.aod.battery.cap, grey, 0, SX.metric)),
 ]
 
 const icon = (name: string): string => `art/icons/${name}.svg`

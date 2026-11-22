@@ -52,7 +52,7 @@ async function record(faceDir: string, assetsRoot: string, sample: Sample): Prom
           contents: a.path === '@zos/ui'
             ? 'const u = globalThis.__zosUi; export default u; export const createWidget = u.createWidget, widget = u.widget, show_level = u.show_level, align = u.align, data_type = u.data_type, system_status = u.system_status, prop = u.prop, getImageInfo = u.getImageInfo, deleteWidget = u.deleteWidget;'
             : a.path === '@zos/sensor'
-              ? 'const s = globalThis.__zosSample; export class Step { getCurrent() { return Number(s.values.STEP) } onChange() {} offChange() {} } export class Time { getDate() { return s.day } getMonth() { return s.month } onPerDay() {} }'
+              ? 'const s = globalThis.__zosSample; export class Step { getCurrent() { return Number(s.values.STEP) } onChange() {} offChange() {} } export class Time { getDate() { return s.day } getMonth() { return s.month } onPerDay() {} onPerMinute() {} }'
             : a.path === '@zos/utils'
               ? 'export const px = (v) => v; export const log = { getLogger: () => ({ log() {}, error() {} }) };'
               : 'export const getScene = () => 0, SCENE_AOD = 1, SCENE_WATCHFACE = 0; export const getLanguage = () => globalThis.__zosSample.languageCode ?? 4;',

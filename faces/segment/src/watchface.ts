@@ -133,7 +133,7 @@ function buildLiveRows(lang: Language) {
   const updateSteps = () => {
     const digits = String(steps.getCurrent()).split('')
     normal(digits.map(d => `images/font/steps/${d}.png`))
-    aod(digits.map(d => `images/aod/font/num/${d}.png`))
+    aod(digits.map(d => `images/aod/font/steps/${d}.png`))
   }
   const time = new Time()
   const date = imageRow(L.aod.date.cx, L.aod.date.y - PAD, 6, AOD)
@@ -148,6 +148,10 @@ function buildLiveRows(lang: Language) {
   updateSteps()
   time.onPerDay(updateDate)
   steps.onChange(updateSteps)
+  // onChange alone left yesterday's count on the normal screen after a midnight spent in AOD:
+  // re-read on return to the face and once a minute.
+  time.onPerMinute(updateSteps)
+  if (ui.widget.WIDGET_DELEGATE !== undefined) ui.createWidget(ui.widget.WIDGET_DELEGATE, { resume_call: updateSteps })
   return () => {
     steps.offChange(updateSteps)
   }

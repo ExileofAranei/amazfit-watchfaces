@@ -43,6 +43,8 @@ declare module '@zos/ui' {
     readonly IMG_LEVEL: WidgetType
     readonly IMG_STATUS: WidgetType
     readonly IMG_CLICK: WidgetType
+    /** docs: watchface/api/hmUI/widget/DELEGATE — may be missing on older firmware, check before use */
+    readonly WIDGET_DELEGATE?: WidgetType
   }
 
   /** docs: watchface/api/hmUI/widget/data_type (subset we use) */
@@ -203,7 +205,14 @@ declare module '@zos/ui' {
     type: number
   }
 
+  /** docs: watchface/api/hmUI/widget/DELEGATE — resume_call: face launched or returned from another screen */
+  interface DelegateOptions {
+    resume_call?: () => void
+    pause_call?: () => void
+  }
+
   type AnyOptions =
+    | DelegateOptions
     | FillRectOptions
     | ImgOptions
     | ImgTimeOptions
@@ -278,5 +287,7 @@ declare module '@zos/sensor' {
     getDate(): number
     getMonth(): number
     onPerDay(cb: () => void): void
+    /** docs: reference/device-app-api/newAPI/sensor/Time */
+    onPerMinute(cb: () => void): void
   }
 }
