@@ -35,7 +35,7 @@ interface Recorded { type: string; o: Opts }
 const LEVEL = { ONLY_NORMAL: 1, ONAL_AOD: 2, ONLY_EDIT: 4 }
 const named = (keys: string[]) => Object.fromEntries(keys.map((k) => [k, k]))
 
-async function record(faceDir: string): Promise<Recorded[]> {
+async function record(faceDir: string, assetsRoot: string, sample: Sample): Promise<Recorded[]> {
   const out = await esbuild({
     entryPoints: [join(faceDir, 'watchface/index.js')],
     bundle: true,
@@ -48,7 +48,9 @@ async function record(faceDir: string): Promise<Recorded[]> {
         b.onResolve({ filter: /^@zos\// }, (a) => ({ path: a.path, namespace: 'zos' }))
         b.onLoad({ filter: /.*/, namespace: 'zos' }, (a) => ({
           contents: a.path === '@zos/ui'
-            ? 'const u = globalThis.__zosUi; export default u; export const createWidget = u.createWidget, widget = u.widget, show_level = u.show_level, align = u.align, data_type = u.data_type, system_status = u.system_status;'
+            ? 'const u = globalThis.__zosUi; export default u; export const createWidget = u.createWidget, widget = u.widget, show_level = u.show_level, align = u.align, data_type = u.data_type, system_status = u.system_status, prop = u.prop, getImageInfo = u.getImageInfo, deleteWidget = u.deleteWidget;'
+            : a.path === '@zos/sensor'
+              ? 'const s = globalThis.__zosSample; export class Step { getCurrent() { return Number(s.values.STEP) } onChange() {} offChange() {} } export class Time { getDate() { return s.day } getMonth() { return s.month } onPerDay() {} }'
             : a.path === '@zos/utils'
               ? 'export const px = (v) => v; export const log = { getLogger: () => ({ log() {}, error() {} }) };'
               : 'export const getScene = () => 0, SCENE_AOD = 1, SCENE_WATCHFACE = 0; export const getLanguage = () => 4;',
@@ -59,7 +61,13 @@ async function record(faceDir: string): Promise<Recorded[]> {
   })
   const calls: Recorded[] = []
   const g = globalThis as any
+  g.__zosSample = sample
   g.__zosUi = {
+    prop: { MORE: 'MORE' },
+    getImageInfo: (path: string) => {
+      const b = readFileSync(join(assetsRoot, path))
+      return { width: b.readUInt32BE(16), height: b.readUInt32BE(20) }
+    },
     createWidget: (type: string, o: Opts) => (calls.push({ type, o }), { setProperty() {}, getProperty() {} }),
     widget: named(['IMG', 'FILL_RECT', 'TEXT', 'IMG_TIME', 'TEXT_IMG', 'IMG_DATE', 'IMG_WEEK', 'IMG_LEVEL', 'IMG_STATUS', 'IMG_CLICK']),
     show_level: LEVEL,
@@ -76,7 +84,7 @@ async function record(faceDir: string): Promise<Recorded[]> {
 }
 
 export async function mock(faceDir: string, assetsRoot: string, outFile: string, sample = DM_SAMPLE, debugTaps = false): Promise<void> {
-  const calls = await record(faceDir)
+  const calls = await record(faceDir, assetsRoot, sample)
   const size = (p: string): [number, number] => {
     const b = readFileSync(join(assetsRoot, p))
     return [b.readUInt32BE(16), b.readUInt32BE(20)]

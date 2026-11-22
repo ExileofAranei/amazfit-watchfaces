@@ -19,7 +19,7 @@
 packages/core       общие компоненты циферблатов (TS) + типы Zepp API (types/zos.d.ts)
 packages/tooling    CLI `wf`: SVG→PNG, бандл TS (esbuild), обёртка над zeus build/preview/dev
 faces/<name>/       один Zeus-проект на циферблат
-  face.config.ts    какие SVG и в каком размере рендерить, точки входа TS
+  face-config.ts    какие SVG и в каком размере рендерить, точки входа TS
   app.json          манифест Zepp
   src/              TS-исходники (layout.ts, watchface.ts, app.ts)
   art/              SVG-исходники ассетов

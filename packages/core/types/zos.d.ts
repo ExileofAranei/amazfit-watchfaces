@@ -259,3 +259,24 @@ declare function App(option: {
   onCreate?(): void
   onDestroy?(): void
 }): void
+
+/** docs: reference/device-app-api/newAPI/ui/getImageInfo, deleteWidget, widget/IMG */
+declare module '@zos/ui' {
+  function getImageInfo(path: string): { width: number; height: number }
+  function deleteWidget(widget: ReturnType<typeof createWidget>): void
+  const prop: { MORE: number }
+}
+
+/** docs: reference/device-app-api/newAPI/sensor/Step and sensor/Time */
+declare module '@zos/sensor' {
+  class Step {
+    getCurrent(): number
+    onChange(cb: () => void): void
+    offChange(cb: () => void): void
+  }
+  class Time {
+    getDate(): number
+    getMonth(): number
+    onPerDay(cb: () => void): void
+  }
+}

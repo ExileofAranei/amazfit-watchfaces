@@ -10,7 +10,7 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 run() { docker compose run --rm wf "$@"; }
-cmd="${1:-help}"; face="${2:-dm-replica}"
+cmd="${1:-help}"; face="${2:-segment}"
 case "$cmd" in
   login)     run npx zeus login --no-browser ;;
   status)    run npx zeus status ;;

@@ -17,7 +17,7 @@ export interface TextStyle {
   tracking?: number
   /** Horizontal glyph scale (1 = font as designed); used to match a narrower reference rendering */
   scaleX?: number
-  /** Folder with <char>.svg + metrics.json (latinAliases) for glyphs missing in the font */
+  /** Folder with Unicode glyph files (e.g. u-0411.svg) + metrics.json (latinAliases) for glyphs missing in the font */
   extraGlyphs?: string
 }
 
@@ -45,7 +45,9 @@ function extras(dir: string) {
     const metrics = JSON.parse(readFileSync(join(dir, 'metrics.json'), 'utf8'))
     const glyphs = new Map<string, Glyph>()
     for (const file of readdirSync(dir).filter((f) => f.endsWith('.svg'))) {
-      const ch = file.replace('.svg', '')
+      const stem = file.slice(0, -4)
+      const code = /^u-([0-9a-f]{4,6})$/.exec(stem)
+      const ch = code ? String.fromCodePoint(parseInt(code[1], 16)) : stem
       const d = readFileSync(join(dir, file), 'utf8').match(/\sd="([^"]+)"/)?.[1]
       const m = metrics.glyphs?.[ch]
       if (d && m) glyphs.set(ch, { d, advance: m.advanceWidth })

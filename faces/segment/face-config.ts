@@ -1,7 +1,7 @@
 import { defineFace, type TextSet, type TextStyle } from '@wf/tooling'
 import { layout } from './src/layout.ts'
 
-const ORBITRON = '../../fonts/orbitron/Orbitron-VF.ttf'
+const ORBITRON = '../../fonts/orbitron/orbitron-vf.ttf'
 const CYR = '../../fonts/segment-cyr/glyphs-750'
 const { white, red, aod: grey } = layout.colors
 const t = layout.time
@@ -43,9 +43,9 @@ const texts: TextSet[] = [
   { to: 'images/font/steps', style: style(450, layout.steps.cap, red, -5, SX.steps), items: digits() },
   { to: 'images/font/white', style: style(850, 10, white, 80, SX.metric), items: { km: 'КМ' }, padTop: 10.8 },
   // AOD
-  { to: 'images/aod/text/month', style: style(750, layout.aod.date.cap, grey, 0, SX.label), items: numbered(MONTHS_GEN), padBottom: 3, uniformWidth: 'left', boxWidth: 170 },
+  { to: 'images/aod/text/month', style: style(750, layout.aod.date.cap, grey, 0, SX.label), items: numbered(MONTHS_GEN), padBottom: 3 },
   { to: 'images/aod/text/weekday', style: style(750, layout.aod.weekday.cap, grey, 0, SX.label), items: numbered(WEEKDAYS), padBottom: 3, uniformWidth: 'center', boxWidth: layout.aod.weekday.boxW },
-  { to: 'images/aod/font/date', style: style(400, layout.aod.date.cap, grey, -20, SX.date), items: digits() },
+  { to: 'images/aod/font/date', style: style(400, layout.aod.date.cap, grey, -20, SX.date), items: Object.fromEntries(Array.from({ length: 31 }, (_, i) => [i + 1, String(i + 1).padStart(2, '0')])) },
   { to: 'images/aod/font/num', style: style(450, layout.aod.numbers.cap, grey, 0, SX.metric), items: digits(SYMBOLS) },
   { to: 'images/aod/font/small', style: style(450, layout.aod.battery.cap, grey, 0, SX.metric), items: digits(SYMBOLS) },
 ]

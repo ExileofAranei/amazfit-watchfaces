@@ -1,5 +1,5 @@
 {
-  "name": "@wf/face-dm-replica",
+  "name": "@wf/face-segment",
   "version": "0.1.0",
   "private": true,
   "type": "module",

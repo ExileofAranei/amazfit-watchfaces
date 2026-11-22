@@ -8,6 +8,6 @@ RUN mkdir -p /home/node/.zepp && chown node:node /home/node/.zepp
 COPY package.json package-lock.json ./
 COPY packages/core/package.json packages/core/
 COPY packages/tooling/package.json packages/tooling/
-COPY faces/dm-replica/package.json faces/dm-replica/
+COPY faces/segment/package.json faces/segment/
 RUN npm ci --no-audit --no-fund && chown -R node:node /work
 USER node

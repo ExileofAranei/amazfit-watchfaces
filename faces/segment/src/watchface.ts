@@ -1,4 +1,5 @@
-import ui from '@zos/ui'
+import ui, { getImageInfo, prop, deleteWidget } from '@zos/ui'
+import { Step, Time } from '@zos/sensor'
 import {
   createBackground,
   createDay,
@@ -16,7 +17,7 @@ import { layout as L } from './layout.ts'
 const NORMAL = ui.show_level.ONLY_NORMAL
 const AOD = ui.show_level.ONAL_AOD
 
-/** Text images carry 1 px of padding above the caps (see face.config.ts). */
+/** Text images carry 1 px of padding above the caps (see face-config.ts). */
 const PAD = 1
 const centred = (cx: number, w: number): number => cx - w / 2
 const numberBox = (cx: number, capTop: number, cap: number, w: number) => ({
@@ -64,7 +65,6 @@ function buildNormal(): void {
 
   createNumber({ box: numberBox(L.calories.cx, L.calories.y, L.calories.cap, L.calories.w), type: ui.data_type.CAL, font: W, space: track(0, L.calories.cap), showLevel: NORMAL })
   createNumber({ box: numberBox(L.heart.cx, L.heart.y, L.heart.cap, L.heart.w), type: ui.data_type.HEART, font: W, space: track(0, L.heart.cap), showLevel: NORMAL })
-  createNumber({ box: numberBox(L.steps.cx, L.steps.y, L.steps.cap, L.steps.w), type: ui.data_type.STEP, font: 'images/font/steps', space: track(-5, L.steps.cap), showLevel: NORMAL })
   createNumber({
     box: numberBox(L.distance.cx, L.distance.y, L.distance.cap, L.distance.w),
     type: ui.data_type.DISTANCE,
@@ -78,9 +78,6 @@ function buildNormal(): void {
 
 function buildAod(): void {
   const A = L.aod
-  const dayX = 141
-  createDay({ x: dayX, y: A.date.y - PAD, font: 'images/aod/font/date', space: track(-20, A.date.cap), showLevel: AOD })
-  createMonthName({ x: dayX + 44.6, y: A.date.y - PAD, dir: 'images/aod/text/month', showLevel: AOD })
   createWeekday({ x: centred(A.weekday.cx, A.weekday.boxW), y: A.weekday.y - PAD, dir: 'images/aod/text/weekday', showLevel: AOD })
 
   const I = A.icons
@@ -92,7 +89,6 @@ function buildAod(): void {
   const F = 'images/aod/font/num'
   const sp = track(0, n.cap)
   createNumber({ box: numberBox(n.calories, n.y, n.cap, n.w), type: ui.data_type.CAL, font: F, space: sp, showLevel: AOD })
-  createNumber({ box: numberBox(n.steps, n.y, n.cap, n.w), type: ui.data_type.STEP, font: F, space: sp, showLevel: AOD })
   createNumber({ box: numberBox(n.heart, n.y, n.cap, n.w), type: ui.data_type.HEART, font: F, space: sp, showLevel: AOD })
 
   const S = 'images/aod/font/small'
@@ -106,6 +102,52 @@ function buildAod(): void {
     showLevel: AOD,
   })
 }
+
+/** Position each image using its own advance, including the narrow Orbitron one. */
+function imageRow(cx: number, y: number, gap: number, level: number) {
+  const widgets: ReturnType<typeof ui.createWidget>[] = []
+  const widths = new Map<string, number>()
+  return (paths: string[]) => {
+    const advances = paths.map(path => {
+      if (!widths.has(path)) widths.set(path, getImageInfo(path).width)
+      return widths.get(path)!
+    })
+    const width = advances.reduce((sum, w) => sum + w, 0) + gap * (paths.length - 1)
+    let x = Math.round(cx - width / 2)
+    paths.forEach((src, i) => {
+      if (widgets[i]) widgets[i].setProperty(prop.MORE, { x, y, src })
+      else widgets.push(ui.createWidget(ui.widget.IMG, { x, y, src, show_level: level }))
+      x += advances[i] + gap
+    })
+    while (widgets.length > paths.length) deleteWidget(widgets.pop()!)
+  }
+}
+
+function buildLiveRows() {
+  const steps = new Step()
+  const normal = imageRow(L.steps.cx, Math.round(L.steps.y - PAD), 0, NORMAL)
+  const aod = imageRow(L.aod.numbers.steps, L.aod.numbers.y - PAD, 0, AOD)
+  const updateSteps = () => {
+    const digits = String(steps.getCurrent()).split('')
+    normal(digits.map(d => `images/font/steps/${d}.png`))
+    aod(digits.map(d => `images/aod/font/num/${d}.png`))
+  }
+  const time = new Time()
+  const date = imageRow(L.aod.date.cx, L.aod.date.y - PAD, 6, AOD)
+  const updateDate = () => date([
+    `images/aod/font/date/${time.getDate()}.png`,
+    `images/aod/text/month/${time.getMonth()}.png`,
+  ])
+  updateDate()
+  updateSteps()
+  time.onPerDay(updateDate)
+  steps.onChange(updateSteps)
+  return () => {
+    steps.offChange(updateSteps)
+  }
+}
+
+let releaseRows: (() => void) | undefined
 
 function buildTapZones(): void {
   const blank = 'images/misc/blank.png'
@@ -134,6 +176,8 @@ WatchFace({
     ])
     buildNormal()
     buildAod()
+    releaseRows = buildLiveRows()
     buildTapZones()
   },
+  onDestroy() { releaseRows?.() },
 })

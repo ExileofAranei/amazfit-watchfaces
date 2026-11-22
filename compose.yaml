@@ -1,6 +1,8 @@
 services:
   wf:
-    build: .
+    build:
+      context: .
+      dockerfile: dockerfile
     image: amazfit-watchfaces-tooling
     working_dir: /work
     user: "1000:1000"

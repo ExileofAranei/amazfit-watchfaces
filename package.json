@@ -13,7 +13,8 @@
   ],
   "scripts": {
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "build:dm": "npm run build -w faces/dm-replica"
+    "build:dm": "npm run build:segment",
+    "build:segment": "npm run build -w faces/segment"
   },
   "devDependencies": {
     "@resvg/resvg-js": "2.6.2",

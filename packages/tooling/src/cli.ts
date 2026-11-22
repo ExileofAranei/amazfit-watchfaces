@@ -9,7 +9,7 @@
  */
 import { build as esbuild } from 'esbuild'
 import { spawnSync } from 'node:child_process'
-import { rmSync } from 'node:fs'
+import { existsSync, rmSync } from 'node:fs'
 import { join, resolve } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { renderComposite, renderSet, renderTexts } from './assets.ts'
@@ -18,7 +18,9 @@ import type { FaceConfig } from './types.ts'
 
 const [cmd = 'build', faceArg = '.'] = process.argv.slice(2)
 const faceDir = resolve(faceArg)
-const config: FaceConfig = (await import(pathToFileURL(join(faceDir, 'face.config.ts')).href)).default
+const configPath = join(faceDir, 'face-config.ts')
+const configUrl = pathToFileURL(existsSync(configPath) ? configPath : join(faceDir, 'face.config.ts'))
+const config: FaceConfig = (await import(configUrl.href)).default
 
 async function assets(): Promise<void> {
   const outRoot = join(faceDir, 'assets', config.assetsDir)

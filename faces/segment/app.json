@@ -2,16 +2,16 @@
   "configVersion": "v3",
   "app": {
     "appId": 1080001,
-    "appName": "DM Replica",
+    "appName": "SEGMENT",
     "appType": "watchface",
     "version": { "code": 1, "name": "0.1.0" },
     "vender": "ExileofAranei",
-    "description": "Personal-use replica of DM by larrabee777",
+    "description": "Digital watchface for Amazfit Active Max, based on DM by larrabee777",
     "icon": "images/preview.png"
   },
-  "permissions": [],
+  "permissions": ["data:user.hd.step"],
   "runtime": {
-    "apiVersion": { "compatible": "2.0", "target": "2.0", "minVersion": "2.0" }
+    "apiVersion": { "compatible": "2.1", "target": "2.1", "minVersion": "2.1" }
   },
   "targets": {
     "active-max": {
@@ -26,8 +26,8 @@
     }
   },
   "i18n": {
-    "ru-RU": { "appName": "DM Replica" },
-    "en-US": { "appName": "DM Replica" }
+    "ru-RU": { "appName": "SEGMENT" },
+    "en-US": { "appName": "SEGMENT" }
   },
   "defaultLanguage": "en-US",
   "debug": false

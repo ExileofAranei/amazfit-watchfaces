@@ -7,7 +7,7 @@ export const layout = {
   time: {
     normal: { height: 108, x: 49.3, y: 187.5, space: 6.5 },
     seconds: { height: 47.4, x: 390.8, y: 246.9, space: 7.3 },
-    aod: { height: 76.5, x: 128.2, y: 207.75, space: 2.6 },
+    aod: { height: 108, x: 82, y: 186, space: 4 },
   },
   month: { cx: 241.5, y: 31.6, cap: 16.5, boxW: 220 },
   weekday: { cx: 241.5, y: 131.4, cap: 16.5, boxW: 260 },
@@ -30,10 +30,10 @@ export const layout = {
     date: { cx: 240, y: 69, cap: 17, boxW: 200 },
     weekday: { cx: 240, y: 99, cap: 13, boxW: 200 },
     /** w = rendered width at h (icon aspect from art/icons) */
-    icons: { flame: { cx: 128, y: 340, w: 18 }, steps: { cx: 240, y: 340, w: 18 }, heart: { cx: 352, y: 340, w: 21.9 }, h: 18 },
-    numbers: { y: 371, cap: 16, w: 100, calories: 128, steps: 240, heart: 352 },
-    battery: { cx: 249, y: 424, cap: 12, w: 80 },
-    bolt: { x: 214, y: 424, h: 12 },
+    icons: { flame: { cx: 128, y: 368, w: 18 }, steps: { cx: 240, y: 368, w: 18 }, heart: { cx: 352, y: 368, w: 21.9 }, h: 18 },
+    numbers: { y: 399, cap: 16, w: 100, calories: 128, steps: 240, heart: 352 },
+    battery: { cx: 249, y: 447, cap: 12, w: 80 },
+    bolt: { x: 214, y: 447, h: 12 },
   },
   colors: { white: '#F6F5FC', red: '#E04B33', aod: '#B9B9BE' },
 } as const

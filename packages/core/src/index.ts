@@ -1,4 +1,4 @@
-export { createSegmentClock, type ClockLayer } from './components/segmentClock.ts'
+export { createSegmentClock, type ClockLayer } from './components/segment-clock.ts'
 export { createBackground } from './components/background.ts'
 export {
   createNumber,
