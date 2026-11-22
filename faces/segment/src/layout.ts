@@ -33,7 +33,7 @@ export const layout = {
     icons: { flame: { cx: 128, y: 368, w: 18 }, steps: { cx: 240, y: 368, w: 18 }, heart: { cx: 352, y: 368, w: 21.9 }, h: 18 },
     numbers: { y: 399, cap: 16, w: 100, calories: 128, steps: 240, heart: 352 },
     battery: { cx: 249, y: 447, cap: 12, w: 80 },
-    bolt: { x: 214, y: 447, h: 12 },
+    bolt: { x: 212.6, y: 446, h: 14 },
   },
   colors: { white: '#F6F5FC', red: '#E04B33', aod: '#B9B9BE' },
 } as const
