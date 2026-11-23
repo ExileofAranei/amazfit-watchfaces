@@ -16,7 +16,7 @@
   "targets": {
     "active-max": {
       "module": {
-        "watchface": { "path": "watchface/index", "main": 1, "editable": 0, "lockscreen": 1 }
+        "watchface": { "path": "watchface/index", "main": 1, "editable": 1, "lockscreen": 1 }
       },
       "platforms": [
         { "st": "r", "dw": 480, "deviceSource": 10813697 },

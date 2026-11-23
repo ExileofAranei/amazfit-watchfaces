@@ -11,6 +11,7 @@ import { dirname, join } from 'node:path'
 export interface Sample {
   /** System language code returned by @zos/settings (4 = ru-RU). */
   languageCode?: number
+  editTypes?: Record<number, number>
   time: [number, number, number]
   day: number
   month: number
@@ -65,13 +66,19 @@ async function record(faceDir: string, assetsRoot: string, sample: Sample): Prom
   const g = globalThis as any
   g.__zosSample = sample
   g.__zosUi = {
-    prop: { MORE: 'MORE' },
+    prop: { MORE: 'MORE', CURRENT_TYPE: 'CURRENT_TYPE' },
     getImageInfo: (path: string) => {
       const b = readFileSync(join(assetsRoot, path))
       return { width: b.readUInt32BE(16), height: b.readUInt32BE(20) }
     },
-    createWidget: (type: string, o: Opts) => (calls.push({ type, o }), { setProperty() {}, getProperty() {} }),
-    widget: named(['IMG', 'FILL_RECT', 'TEXT', 'IMG_TIME', 'TEXT_IMG', 'IMG_DATE', 'IMG_WEEK', 'IMG_LEVEL', 'IMG_STATUS', 'IMG_CLICK']),
+    createWidget: (type: string, o: Opts) => {
+      calls.push({ type, o })
+      return {
+        setProperty() {},
+        getProperty: (key: string) => key === 'CURRENT_TYPE' ? sample.editTypes?.[o.edit_id] ?? o.default_type : undefined,
+      }
+    },
+    widget: named(['WATCHFACE_EDIT_GROUP', 'IMG', 'FILL_RECT', 'TEXT', 'IMG_TIME', 'TEXT_IMG', 'IMG_DATE', 'IMG_WEEK', 'IMG_LEVEL', 'IMG_STATUS', 'IMG_CLICK']),
     show_level: LEVEL,
     align: { LEFT: 'L', RIGHT: 'R', CENTER_H: 'C', CENTER_V: 'V', TOP: 'T', BOTTOM: 'B' },
     data_type: named(['BATTERY', 'STEP', 'CAL', 'HEART', 'DISTANCE', 'WEATHER', 'WEATHER_CURRENT', 'ALARM_CLOCK']),

@@ -79,20 +79,23 @@ function buildNormal(lang: Language): void {
   })
 }
 
-function buildAod(lang: Language): void {
-  const A = L.aod
-  createWeekday({ x: centred(A.weekday.cx, A.weekday.boxW), y: A.weekday.y - PAD, dir: `images/aod/text/${lang}/weekday`, showLevel: AOD })
-
-  const S = 'images/aod/font/small'
-  createImage({ x: A.bolt.x, y: A.bolt.y, src: 'images/aod/icons/bolt.png', showLevel: AOD })
-  createNumber({
-    box: numberBox(A.battery.cx, A.battery.y, A.battery.cap, A.battery.w),
-    type: ui.data_type.BATTERY,
-    font: S,
-    unit: `${S}/percent.png`,
-    space: track(0, A.battery.cap),
-    showLevel: AOD,
+/** This edit slot controls only the step count below the AOD clock. */
+function aodStepsEnabled(lang: Language): boolean {
+  const off = 100001
+  const steps = 100002
+  const dir = 'images/edit'
+  const group = ui.createWidget(ui.widget.WATCHFACE_EDIT_GROUP, {
+    edit_id: 1, x: 160, y: 368, w: 160, h: 48,
+    select_image: `${dir}/frame.png`, un_select_image: `${dir}/frame.png`,
+    tips_BG: `${dir}/tip.png`, tips_x: 0, tips_y: -50, tips_width: 160,
+    default_type: off,
+    optional_types: [
+      { type: off, preview: `${dir}/off.png`, title_en: lang === 'ru' ? 'AOD: Выкл.' : 'AOD: Off', title_sc: 'AOD: Off', title_tc: 'AOD: Off' },
+      { type: steps, preview: `${dir}/steps.png`, title_en: lang === 'ru' ? 'AOD: Шаги' : 'AOD: Steps', title_sc: 'AOD: Steps', title_tc: 'AOD: Steps' },
+    ],
+    count: 2,
   })
+  return group.getProperty(prop.CURRENT_TYPE) === steps
 }
 
 /** Position each image using its own advance, including the narrow Orbitron one. */
@@ -115,27 +118,17 @@ function imageRow(cx: number, y: number, gap: number, level: number) {
   }
 }
 
-function buildLiveRows(lang: Language) {
+function buildLiveRows(showAodSteps: boolean) {
   const steps = new Step()
   const normal = imageRow(L.steps.cx, Math.round(L.steps.y - PAD), 0, NORMAL)
-  const aod = imageRow(L.aod.steps.cx, L.aod.steps.y - PAD, 0, AOD)
+  const aod = showAodSteps ? imageRow(L.aod.steps.cx, L.aod.steps.y - PAD, 0, AOD) : undefined
   const updateSteps = () => {
     const digits = String(steps.getCurrent()).split('')
     normal(digits.map(d => `images/font/steps/${d}.png`))
-    aod(digits.map(d => `images/aod/font/steps/${d}.png`))
+    aod?.(digits.map(d => `images/aod/font/steps/${d}.png`))
   }
   const time = new Time()
-  const date = imageRow(L.aod.date.cx, L.aod.date.y - PAD, 6, AOD)
-  const updateDate = () => {
-    const day = String(time.getDate())
-    const dayLabel = lang === 'ru' ? day.padStart(2, '0') : day
-    const dayImage = `images/aod/font/date/${dayLabel}.png`
-    const monthImage = `images/aod/text/${lang}/month/${time.getMonth()}.png`
-    date(lang === 'ru' ? [dayImage, monthImage] : [monthImage, dayImage])
-  }
-  updateDate()
   updateSteps()
-  time.onPerDay(updateDate)
   steps.onChange(updateSteps)
   // onChange alone left yesterday's count on the normal screen after a midnight spent in AOD:
   // re-read on return to the face and once a minute.
@@ -175,8 +168,7 @@ WatchFace({
     ])
     const lang = getLanguage() === RUSSIAN_LANGUAGE_CODE ? 'ru' : 'en'
     buildNormal(lang)
-    buildAod(lang)
-    releaseRows = buildLiveRows(lang)
+    releaseRows = buildLiveRows(aodStepsEnabled(lang))
     buildTapZones()
   },
   onDestroy() { releaseRows?.() },

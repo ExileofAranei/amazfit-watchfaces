@@ -33,6 +33,7 @@ declare module '@zos/ui' {
   }
 
   const widget: {
+    readonly WATCHFACE_EDIT_GROUP: WidgetType
     readonly IMG: WidgetType
     readonly FILL_RECT: WidgetType
     readonly TEXT: WidgetType
@@ -211,7 +212,26 @@ declare module '@zos/ui' {
     pause_call?: () => void
   }
 
+  /** docs: watchface/api/hmUI/widget/edit_watchface */
+  interface EditGroupOptions {
+    edit_id: number
+    x: number
+    y: number
+    w: number
+    h: number
+    select_image: string
+    un_select_image: string
+    tips_BG: string
+    tips_x: number
+    tips_y: number
+    tips_width: number
+    default_type: number
+    optional_types: { type: number; preview: string; title_en?: string; title_sc?: string; title_tc?: string }[]
+    count: number
+  }
+
   type AnyOptions =
+    | EditGroupOptions
     | DelegateOptions
     | FillRectOptions
     | ImgOptions
@@ -273,7 +293,7 @@ declare function App(option: {
 declare module '@zos/ui' {
   function getImageInfo(path: string): { width: number; height: number }
   function deleteWidget(widget: ReturnType<typeof createWidget>): void
-  const prop: { MORE: number }
+  const prop: { MORE: number; CURRENT_TYPE: number }
 }
 
 /** docs: reference/device-app-api/newAPI/sensor/Step and sensor/Time */

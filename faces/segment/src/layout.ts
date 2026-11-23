@@ -7,9 +7,8 @@ export const layout = {
   time: {
     normal: { height: 108, x: 49.3, y: 187.5, space: 6.5 },
     seconds: { height: 47.4, x: 390.8, y: 246.9, space: 7.3 },
-    /** Thin AOD segments (art/time/aod): 4 × 66.8 + colon 28 + 4 × 6 = 319 px wide, centred on x = 240.
-     * y centres the row between the weekday (bottom 112) and the steps (top 404). 106 px keeps 08:08 within the AOD limit. */
-    aod: { height: 106, x: 80.4, y: 205, space: 6 },
+    // The colon includes 16 px of padding on each side for a 20 px gap.
+    aod: { height: 128, x: 26, y: 176, space: 4 },
   },
   month: { cx: 241.5, y: 31.6, cap: 16.5, boxW: 220 },
   weekday: { cx: 241.5, y: 131.4, cap: 16.5, boxW: 260 },
@@ -29,12 +28,7 @@ export const layout = {
   steps: { cx: 240.7, y: 380.5, cap: 27.2, w: 160 },
   distance: { cx: 243.6, y: 434.2, cap: 19.8, w: 140 },
   aod: {
-    date: { cx: 240, y: 69, cap: 17, boxW: 200 },
-    weekday: { cx: 240, y: 99, cap: 13, boxW: 200 },
-    /** Only steps remain below the time: no icon, number centred */
-    steps: { cx: 240, y: 404, cap: 16 },
-    battery: { cx: 249, y: 447, cap: 12, w: 80 },
-    bolt: { x: 212.6, y: 446, h: 14 },
+    steps: { cx: 240, y: 426, cap: 16 },
   },
   colors: { white: '#F6F5FC', red: '#E04B33', aod: '#B9B9BE' },
 } as const
