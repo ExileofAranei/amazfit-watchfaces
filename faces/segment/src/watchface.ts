@@ -83,17 +83,6 @@ function buildAod(lang: Language): void {
   const A = L.aod
   createWeekday({ x: centred(A.weekday.cx, A.weekday.boxW), y: A.weekday.y - PAD, dir: `images/aod/text/${lang}/weekday`, showLevel: AOD })
 
-  const I = A.icons
-  createImage({ x: centred(I.flame.cx, I.flame.w), y: I.flame.y, src: 'images/aod/icons/flame.png', showLevel: AOD })
-  createImage({ x: centred(I.steps.cx, I.steps.w), y: I.steps.y, src: 'images/aod/icons/steps.png', showLevel: AOD })
-  createImage({ x: centred(I.heart.cx, I.heart.w), y: I.heart.y, src: 'images/aod/icons/heart.png', showLevel: AOD })
-
-  const n = A.numbers
-  const F = 'images/aod/font/num'
-  const sp = track(0, n.cap)
-  createNumber({ box: numberBox(n.calories, n.y, n.cap, n.w), type: ui.data_type.CAL, font: F, space: sp, showLevel: AOD })
-  createNumber({ box: numberBox(n.heart, n.y, n.cap, n.w), type: ui.data_type.HEART, font: F, space: sp, showLevel: AOD })
-
   const S = 'images/aod/font/small'
   createImage({ x: A.bolt.x, y: A.bolt.y, src: 'images/aod/icons/bolt.png', showLevel: AOD })
   createNumber({
@@ -129,13 +118,20 @@ function imageRow(cx: number, y: number, gap: number, level: number) {
 function buildLiveRows(lang: Language) {
   const steps = new Step()
   const normal = imageRow(L.steps.cx, Math.round(L.steps.y - PAD), 0, NORMAL)
-  const aod = imageRow(L.aod.numbers.steps, L.aod.numbers.y - PAD, 0, AOD)
+  const aod = imageRow(L.aod.steps.cx, L.aod.steps.y - PAD, 0, AOD)
   const updateSteps = () => {
     const digits = String(steps.getCurrent()).split('')
     normal(digits.map(d => `images/font/steps/${d}.png`))
     aod(digits.map(d => `images/aod/font/steps/${d}.png`))
   }
   const time = new Time()
+  const T = L.time.aod
+  const clock = imageRow(T.cx, T.y - PAD, T.gap, AOD)
+  const pad2 = (n: number) => String(n).padStart(2, '0')
+  const updateClock = () => {
+    const hhmm = `${pad2(time.getHours())}:${pad2(time.getMinutes())}`.split('')
+    clock(hhmm.map(c => `images/aod/time/${c === ':' ? 'colon' : c}.png`))
+  }
   const date = imageRow(L.aod.date.cx, L.aod.date.y - PAD, 6, AOD)
   const updateDate = () => {
     const day = String(time.getDate())
@@ -144,14 +140,19 @@ function buildLiveRows(lang: Language) {
     const monthImage = `images/aod/text/${lang}/month/${time.getMonth()}.png`
     date(lang === 'ru' ? [dayImage, monthImage] : [monthImage, dayImage])
   }
+  updateClock()
   updateDate()
   updateSteps()
   time.onPerDay(updateDate)
   steps.onChange(updateSteps)
   // onChange alone left yesterday's count on the normal screen after a midnight spent in AOD:
   // re-read on return to the face and once a minute.
-  time.onPerMinute(updateSteps)
-  if (ui.widget.WIDGET_DELEGATE !== undefined) ui.createWidget(ui.widget.WIDGET_DELEGATE, { resume_call: updateSteps })
+  const perMinute = () => {
+    updateClock()
+    updateSteps()
+  }
+  time.onPerMinute(perMinute)
+  if (ui.widget.WIDGET_DELEGATE !== undefined) ui.createWidget(ui.widget.WIDGET_DELEGATE, { resume_call: perMinute })
   return () => {
     steps.offChange(updateSteps)
   }
@@ -172,7 +173,7 @@ function buildTapZones(): void {
 WatchFace({
   build() {
     createBackground()
-    const { normal, seconds, aod } = L.time
+    const { normal, seconds } = L.time
     createSegmentClock([
       {
         digitsDir: 'images/time/normal',
@@ -182,7 +183,6 @@ WatchFace({
         showLevel: NORMAL,
         seconds: { digitsDir: 'images/time/seconds', x: seconds.x, y: seconds.y, space: seconds.space },
       },
-      { digitsDir: 'images/time/aod', x: aod.x, y: aod.y, space: aod.space, showLevel: AOD },
     ])
     const lang = getLanguage() === RUSSIAN_LANGUAGE_CODE ? 'ru' : 'en'
     buildNormal(lang)

@@ -7,7 +7,8 @@ export const layout = {
   time: {
     normal: { height: 108, x: 49.3, y: 187.5, space: 6.5 },
     seconds: { height: 47.4, x: 390.8, y: 246.9, space: 7.3 },
-    aod: { height: 108, x: 82, y: 186, space: 4 },
+    /** AOD time is set in Rajdhani Light (proportional, narrow 1) and centred by code; y is the cap top */
+    aod: { cx: 240, y: 185, cap: 110, gap: 4 },
   },
   month: { cx: 241.5, y: 31.6, cap: 16.5, boxW: 220 },
   weekday: { cx: 241.5, y: 131.4, cap: 16.5, boxW: 260 },
@@ -29,9 +30,8 @@ export const layout = {
   aod: {
     date: { cx: 240, y: 69, cap: 17, boxW: 200 },
     weekday: { cx: 240, y: 99, cap: 13, boxW: 200 },
-    /** w = rendered width at h (icon aspect from art/icons) */
-    icons: { flame: { cx: 128, y: 368, w: 18 }, steps: { cx: 240, y: 368, w: 18 }, heart: { cx: 352, y: 368, w: 21.9 }, h: 18 },
-    numbers: { y: 399, cap: 16, w: 100, calories: 128, steps: 240, heart: 352 },
+    /** Only steps remain below the time: no icon, number centred */
+    steps: { cx: 240, y: 404, cap: 16 },
     battery: { cx: 249, y: 447, cap: 12, w: 80 },
     bolt: { x: 212.6, y: 446, h: 14 },
   },

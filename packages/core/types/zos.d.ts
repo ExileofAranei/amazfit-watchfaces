@@ -284,6 +284,9 @@ declare module '@zos/sensor' {
     offChange(cb: () => void): void
   }
   class Time {
+    /** docs: reference/device-app-api/newAPI/sensor/Time (API 2.0) */
+    getHours(): number
+    getMinutes(): number
     getDate(): number
     getMonth(): number
     onPerDay(cb: () => void): void

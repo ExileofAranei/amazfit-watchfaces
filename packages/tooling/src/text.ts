@@ -32,7 +32,8 @@ function instance(path: string, wght: number): fontkit.Font {
   let f = fontCache.get(key)
   if (!f) {
     const base = fontkit.openSync(path) as fontkit.Font
-    f = base.getVariation({ wght }) as fontkit.Font
+    // Static fonts have no axes: use them as they are and ignore wght
+    f = (Object.keys(base.variationAxes ?? {}).length ? base.getVariation({ wght }) : base) as fontkit.Font
     fontCache.set(key, f)
   }
   return f

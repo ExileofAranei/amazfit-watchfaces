@@ -3,6 +3,8 @@ import { layout } from './src/layout.ts'
 
 const ORBITRON = '../../fonts/orbitron/orbitron-vf.ttf'
 const CYR = '../../fonts/segment-cyr/glyphs-750'
+/** Static Light cut (OFL): thin strokes keep the large AOD time within the lit-pixel limit */
+const RAJDHANI = '../../fonts/rajdhani/rajdhani-light.ttf'
 const { white, red, aod: grey } = layout.colors
 const t = layout.time
 
@@ -68,8 +70,8 @@ const texts: TextSet[] = [
   ...tabularFont('images/font/white', style(450, 19.8, white, 0, SX.metric)),
   { to: 'images/font/steps', style: style(450, layout.steps.cap, red, -5, SX.steps), items: digits() },
   { to: 'images/aod/font/date', style: style(400, layout.aod.date.cap, grey, -20, SX.date), items: Object.fromEntries(dateLabels.map(day => [day, day])) },
-  { to: 'images/aod/font/steps', style: style(450, layout.aod.numbers.cap, grey, 0, SX.metric), items: digits() },
-  ...tabularFont('images/aod/font/num', style(450, layout.aod.numbers.cap, grey, 0, SX.metric)),
+  { to: 'images/aod/font/steps', style: style(450, layout.aod.steps.cap, grey, 0, SX.metric), items: digits() },
+  { to: 'images/aod/time', style: { font: RAJDHANI, wght: 300, cap: t.aod.cap, color: grey }, items: digits({ colon: ':' }) },
   ...tabularFont('images/aod/font/small', style(450, layout.aod.battery.cap, grey, 0, SX.metric)),
 ]
 
@@ -93,14 +95,12 @@ export default defineFace({
   assets: [
     { from: 'art/time/normal', to: 'images/time/normal', height: t.normal.height },
     { from: 'art/time/normal', to: 'images/time/seconds', height: t.seconds.height },
-    { from: 'art/time/aod', to: 'images/time/aod', height: t.aod.height },
     { files: weatherFiles, to: 'images/weather', height: layout.weather.h },
     { files: { flame: icon('flame') }, to: 'images/icons', height: layout.icons.flame.h },
     { files: { heart: icon('heart') }, to: 'images/icons', height: layout.icons.heart.h },
     { files: { steps: icon('steps') }, to: 'images/icons', height: layout.icons.steps.h },
     { files: { bolt: icon('bolt') }, to: 'images/icons', height: layout.bolt.h },
     { files: { alarm: icon('alarm') }, to: 'images/icons', height: layout.alarm.h },
-    { files: { flame: icon('flame'), heart: icon('heart'), steps: icon('steps') }, to: 'images/aod/icons', height: layout.aod.icons.h, recolor: toGrey },
     { files: { bolt: icon('bolt') }, to: 'images/aod/icons', height: layout.aod.bolt.h, recolor: { ...toGrey, '#F2CA56': grey, '#f2ca56': grey } },
     { files: { blank: 'art/misc/blank.svg' }, to: 'images/misc', height: 4 },
   ],
