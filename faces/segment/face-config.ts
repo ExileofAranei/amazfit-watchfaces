@@ -3,8 +3,6 @@ import { layout } from './src/layout.ts'
 
 const ORBITRON = '../../fonts/orbitron/orbitron-vf.ttf'
 const CYR = '../../fonts/segment-cyr/glyphs-750'
-/** Static Light cut (OFL): thin strokes keep the large AOD time within the lit-pixel limit */
-const RAJDHANI = '../../fonts/rajdhani/rajdhani-light.ttf'
 const { white, red, aod: grey } = layout.colors
 const t = layout.time
 
@@ -71,7 +69,7 @@ const texts: TextSet[] = [
   { to: 'images/font/steps', style: style(450, layout.steps.cap, red, -5, SX.steps), items: digits() },
   { to: 'images/aod/font/date', style: style(400, layout.aod.date.cap, grey, -20, SX.date), items: Object.fromEntries(dateLabels.map(day => [day, day])) },
   { to: 'images/aod/font/steps', style: style(450, layout.aod.steps.cap, grey, 0, SX.metric), items: digits() },
-  { to: 'images/aod/time', style: { font: RAJDHANI, wght: 300, cap: t.aod.cap, color: grey }, items: digits({ colon: ':' }) },
+  { to: 'images/aod/time', style: { font: ORBITRON, wght: 400, cap: t.aod.cap, color: grey }, items: digits({ colon: ':' }) },
   ...tabularFont('images/aod/font/small', style(450, layout.aod.battery.cap, grey, 0, SX.metric)),
 ]
 
