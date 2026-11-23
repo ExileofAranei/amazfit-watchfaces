@@ -125,13 +125,6 @@ function buildLiveRows(lang: Language) {
     aod(digits.map(d => `images/aod/font/steps/${d}.png`))
   }
   const time = new Time()
-  const T = L.time.aod
-  const clock = imageRow(T.cx, T.y - PAD, T.gap, AOD)
-  const pad2 = (n: number) => String(n).padStart(2, '0')
-  const updateClock = () => {
-    const hhmm = `${pad2(time.getHours())}:${pad2(time.getMinutes())}`.split('')
-    clock(hhmm.map(c => `images/aod/time/${c === ':' ? 'colon' : c}.png`))
-  }
   const date = imageRow(L.aod.date.cx, L.aod.date.y - PAD, 6, AOD)
   const updateDate = () => {
     const day = String(time.getDate())
@@ -140,19 +133,14 @@ function buildLiveRows(lang: Language) {
     const monthImage = `images/aod/text/${lang}/month/${time.getMonth()}.png`
     date(lang === 'ru' ? [dayImage, monthImage] : [monthImage, dayImage])
   }
-  updateClock()
   updateDate()
   updateSteps()
   time.onPerDay(updateDate)
   steps.onChange(updateSteps)
   // onChange alone left yesterday's count on the normal screen after a midnight spent in AOD:
   // re-read on return to the face and once a minute.
-  const perMinute = () => {
-    updateClock()
-    updateSteps()
-  }
-  time.onPerMinute(perMinute)
-  if (ui.widget.WIDGET_DELEGATE !== undefined) ui.createWidget(ui.widget.WIDGET_DELEGATE, { resume_call: perMinute })
+  time.onPerMinute(updateSteps)
+  if (ui.widget.WIDGET_DELEGATE !== undefined) ui.createWidget(ui.widget.WIDGET_DELEGATE, { resume_call: updateSteps })
   return () => {
     steps.offChange(updateSteps)
   }
@@ -173,7 +161,7 @@ function buildTapZones(): void {
 WatchFace({
   build() {
     createBackground()
-    const { normal, seconds } = L.time
+    const { normal, seconds, aod } = L.time
     createSegmentClock([
       {
         digitsDir: 'images/time/normal',
@@ -183,6 +171,7 @@ WatchFace({
         showLevel: NORMAL,
         seconds: { digitsDir: 'images/time/seconds', x: seconds.x, y: seconds.y, space: seconds.space },
       },
+      { digitsDir: 'images/time/aod', x: aod.x, y: aod.y, space: aod.space, showLevel: AOD },
     ])
     const lang = getLanguage() === RUSSIAN_LANGUAGE_CODE ? 'ru' : 'en'
     buildNormal(lang)

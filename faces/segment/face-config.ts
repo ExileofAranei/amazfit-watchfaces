@@ -69,7 +69,6 @@ const texts: TextSet[] = [
   { to: 'images/font/steps', style: style(450, layout.steps.cap, red, -5, SX.steps), items: digits() },
   { to: 'images/aod/font/date', style: style(400, layout.aod.date.cap, grey, -20, SX.date), items: Object.fromEntries(dateLabels.map(day => [day, day])) },
   { to: 'images/aod/font/steps', style: style(450, layout.aod.steps.cap, grey, 0, SX.metric), items: digits() },
-  { to: 'images/aod/time', style: { font: ORBITRON, wght: 400, cap: t.aod.cap, color: grey }, items: digits({ colon: ':' }) },
   ...tabularFont('images/aod/font/small', style(450, layout.aod.battery.cap, grey, 0, SX.metric)),
 ]
 
@@ -93,6 +92,7 @@ export default defineFace({
   assets: [
     { from: 'art/time/normal', to: 'images/time/normal', height: t.normal.height },
     { from: 'art/time/normal', to: 'images/time/seconds', height: t.seconds.height },
+    { from: 'art/time/aod', to: 'images/time/aod', height: t.aod.height },
     { files: weatherFiles, to: 'images/weather', height: layout.weather.h },
     { files: { flame: icon('flame') }, to: 'images/icons', height: layout.icons.flame.h },
     { files: { heart: icon('heart') }, to: 'images/icons', height: layout.icons.heart.h },
