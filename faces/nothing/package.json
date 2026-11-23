@@ -1,0 +1,19 @@
+{
+  "name": "@wf/face-nothing",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "glyphs": "node art/glyphs.ts",
+    "assets": "node ../../packages/tooling/src/cli.ts assets .",
+    "bundle": "node ../../packages/tooling/src/cli.ts bundle .",
+    "build": "node ../../packages/tooling/src/cli.ts build .",
+    "preview": "node ../../packages/tooling/src/cli.ts preview .",
+    "dev": "node ../../packages/tooling/src/cli.ts dev .",
+    "mock": "node ../../packages/tooling/src/cli.ts mock ."
+  },
+  "dependencies": {
+    "@wf/core": "*",
+    "@wf/tooling": "*"
+  }
+}

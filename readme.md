@@ -39,5 +39,7 @@ just mock segment        # офлайн-превью PNG
 | Каталог | Описание |
 |---|---|
 | [faces/segment](faces/segment) | Копия циферблата DM (автор larrabee777) для Active Max. См. README внутри. |
+| [faces/nothing](faces/nothing) | Точечный циферблат в стиле Nothing для Active Max. |
+| [faces/segue](faces/segue) | Основной экран SEGMENT + AOD NOTHING. |
 
 Установка на часы и симулятор: [docs/install.md](docs/install.md).

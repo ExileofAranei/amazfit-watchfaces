@@ -35,10 +35,10 @@ export const DM_SAMPLE: Sample = {
 type Opts = Record<string, any>
 interface Recorded { type: string; o: Opts }
 
-const LEVEL = { ONLY_NORMAL: 1, ONAL_AOD: 2, ONLY_EDIT: 4 }
+export const LEVEL = { ONLY_NORMAL: 1, ONAL_AOD: 2, ONLY_EDIT: 4 }
 const named = (keys: string[]) => Object.fromEntries(keys.map((k) => [k, k]))
 
-async function record(faceDir: string, assetsRoot: string, sample: Sample): Promise<Recorded[]> {
+export async function record(faceDir: string, assetsRoot: string, sample: Sample): Promise<Recorded[]> {
   const out = await esbuild({
     entryPoints: [join(faceDir, 'watchface/index.js')],
     bundle: true,
@@ -147,8 +147,14 @@ export async function mock(faceDir: string, assetsRoot: string, outFile: string,
         case 'IMG_TIME': {
           const [hh, mm, ss] = sample.time
           const hs = o.hour_space ?? 0
-          const hRow = row([...pad2(hh)].map((c) => o.hour_array[+c]).concat(o.hour_unit_en ? [o.hour_unit_en] : []).concat([...pad2(mm)].map((c) => o.minute_array[+c])), hs)
+          const hours = [...pad2(hh)].map(c => o.hour_array[+c])
+          if (o.hour_unit_en) hours.push(o.hour_unit_en)
+          const hRow = row(hours, hs)
           s += drawRow(hRow, o.hour_startX, o.hour_startY, hs)
+          const ms = o.minute_space ?? 0
+          const minutes = row([...pad2(mm)].map(c => o.minute_array[+c]), ms)
+          const mx = o.minute_follow ? o.hour_startX + hRow.width + hs : o.minute_startX
+          s += drawRow(minutes, mx, o.minute_follow ? o.hour_startY : o.minute_startY, ms)
           if (o.second_array) s += drawRow(row([...pad2(ss)].map((c) => o.second_array[+c]), o.second_space ?? 0), o.second_startX, o.second_startY, o.second_space ?? 0)
           break
         }

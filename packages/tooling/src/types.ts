@@ -42,6 +42,7 @@ export interface FaceConfig {
   assets: AssetSet[]
   texts?: TextSet[]
   composites?: Composite[]
+  validate?: (faceDir: string, assetsRoot: string) => Promise<void>
   /** Picker image rendered from the normal scene at build time. */
   normalPreview?: { to: string; size: number }
   /** output js (relative to face dir) → TS entry */

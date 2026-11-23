@@ -54,6 +54,7 @@ function zeus(sub: string): void {
 
 await assets()
 if (cmd !== 'assets' || config.normalPreview) await bundle()
+await config.validate?.(faceDir, join(faceDir, 'assets', config.assetsDir))
 if (config.normalPreview) {
   const root = join(faceDir, 'assets', config.assetsDir)
   await mock(faceDir, root, join(root, config.normalPreview.to), undefined, false, config.normalPreview.size)

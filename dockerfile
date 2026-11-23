@@ -9,5 +9,7 @@ COPY package.json package-lock.json ./
 COPY packages/core/package.json packages/core/
 COPY packages/tooling/package.json packages/tooling/
 COPY faces/segment/package.json faces/segment/
+COPY faces/nothing/package.json faces/nothing/
+COPY faces/segue/package.json faces/segue/
 RUN npm ci --no-audit --no-fund && chown -R node:node /work
 USER node
