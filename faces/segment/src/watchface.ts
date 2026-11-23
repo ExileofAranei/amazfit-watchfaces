@@ -79,23 +79,44 @@ function buildNormal(lang: Language): void {
   })
 }
 
-/** This edit slot controls only the step count below the AOD clock. */
-function aodStepsEnabled(lang: Language): boolean {
-  const off = 100001
-  const steps = 100002
+// Keep the original lower slot's saved Off and Steps choices across upgrades.
+const aodChoices = [
+  { type: 100001, metric: 'off', ru: 'Выкл.', en: 'Off' },
+  { type: 100002, metric: 'steps', ru: 'Шаги', en: 'Steps' },
+  { type: 100003, metric: 'heart', ru: 'Пульс', en: 'Heart rate' },
+  { type: 100004, metric: 'battery', ru: 'Заряд', en: 'Battery' },
+] as const
+
+function buildAodSlots(lang: Language) {
+  const stepRows: ReturnType<typeof imageRow>[] = []
   const dir = 'images/edit'
-  const group = ui.createWidget(ui.widget.WATCHFACE_EDIT_GROUP, {
-    edit_id: 1, x: 160, y: 368, w: 160, h: 48,
-    select_image: `${dir}/frame.png`, un_select_image: `${dir}/frame.png`,
-    tips_BG: `${dir}/tip.png`, tips_x: -22, tips_y: -54, tips_width: 204,
-    default_type: off,
-    optional_types: [
-      { type: off, preview: `${dir}/off.png`, title_en: lang === 'ru' ? 'Шаги: выкл.' : 'Steps: off', title_sc: 'Steps: off', title_tc: 'Steps: off' },
-      { type: steps, preview: `${dir}/steps.png`, title_en: lang === 'ru' ? 'Шаги: вкл.' : 'Steps: on', title_sc: 'Steps: on', title_tc: 'Steps: on' },
-    ],
-    count: 2,
-  })
-  return group.getProperty(prop.CURRENT_TYPE) === steps
+  const font = 'images/aod/font/metric'
+  const options = aodChoices.map(choice => ({
+    type: choice.type, preview: `${dir}/${choice.metric}.png`,
+    title_en: choice[lang], title_sc: choice.en, title_tc: choice.en,
+  }))
+  for (const slot of L.aod.slots) {
+    const group = ui.createWidget(ui.widget.WATCHFACE_EDIT_GROUP, {
+      edit_id: slot.editId, x: 160, y: slot.y - 16, w: 160, h: 48,
+      select_image: `${dir}/selected.png`, un_select_image: `${dir}/frame.png`,
+      tips_BG: `${dir}/tip.png`, tips_x: -22, tips_y: slot.tipOffset, tips_width: 204,
+      default_type: aodChoices[0].type, optional_types: options, count: options.length,
+    })
+    const type = group.getProperty(prop.CURRENT_TYPE)
+    const choice = aodChoices.find(option => option.type === type)
+    if (choice?.metric === 'steps') {
+      stepRows.push(imageRow(240, slot.y - PAD, 0, AOD))
+    } else if (choice?.metric === 'heart' || choice?.metric === 'battery') {
+      const battery = choice.metric === 'battery'
+      createNumber({
+        box: numberBox(240, slot.y, L.aod.cap, 120), font,
+        type: battery ? ui.data_type.BATTERY : ui.data_type.HEART,
+        unit: battery ? `${font}/percent.png` : undefined,
+        invalid: `${font}/minus.png`, showLevel: AOD,
+      })
+    }
+  }
+  return stepRows
 }
 
 /** Position each image using its own advance, including the narrow Orbitron one. */
@@ -118,14 +139,13 @@ function imageRow(cx: number, y: number, gap: number, level: number) {
   }
 }
 
-function buildLiveRows(showAodSteps: boolean) {
+function buildLiveRows(stepRows: ReturnType<typeof imageRow>[]) {
   const steps = new Step()
   const normal = imageRow(L.steps.cx, Math.round(L.steps.y - PAD), 0, NORMAL)
-  const aod = showAodSteps ? imageRow(L.aod.steps.cx, L.aod.steps.y - PAD, 0, AOD) : undefined
   const updateSteps = () => {
     const digits = String(steps.getCurrent()).split('')
     normal(digits.map(d => `images/font/steps/${d}.png`))
-    aod?.(digits.map(d => `images/aod/font/steps/${d}.png`))
+    for (const row of stepRows) row(digits.map(d => `images/aod/font/steps/${d}.png`))
   }
   const time = new Time()
   updateSteps()
@@ -168,7 +188,7 @@ WatchFace({
     ])
     const lang = getLanguage() === RUSSIAN_LANGUAGE_CODE ? 'ru' : 'en'
     buildNormal(lang)
-    releaseRows = buildLiveRows(aodStepsEnabled(lang))
+    releaseRows = buildLiveRows(buildAodSlots(lang))
     buildTapZones()
   },
   onDestroy() { releaseRows?.() },

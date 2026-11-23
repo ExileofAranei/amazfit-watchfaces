@@ -28,7 +28,11 @@ export const layout = {
   steps: { cx: 240.7, y: 380.5, cap: 27.2, w: 160 },
   distance: { cx: 243.6, y: 434.2, cap: 19.8, w: 140 },
   aod: {
-    steps: { cx: 240, y: 426, cap: 16 },
+    cap: 16,
+    slots: [
+      { editId: 2, y: 38, tipOffset: 54 },
+      { editId: 1, y: 426, tipOffset: -54 },
+    ],
   },
   colors: { white: '#F6F5FC', red: '#E04B33', aod: '#B9B9BE' },
 } as const

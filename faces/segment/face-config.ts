@@ -60,7 +60,9 @@ const texts: TextSet[] = [
   { to: 'images/font/date', style: style(400, layout.day.cap, red, -20, SX.date), items: digits() },
   ...tabularFont('images/font/white', style(450, 19.8, white, 0, SX.metric)),
   { to: 'images/font/steps', style: style(450, layout.steps.cap, red, -5, SX.steps), items: digits() },
-  { to: 'images/aod/font/steps', style: style(450, layout.aod.steps.cap, grey, 0, SX.metric), items: digits() },
+  { to: 'images/aod/font/metric', style: style(450, layout.aod.cap, grey, 0, SX.metric), items: digits(), uniformWidth: 'center' },
+  { to: 'images/aod/font/metric', style: style(450, layout.aod.cap, grey, 0, SX.metric), items: { percent: '%', minus: '-' } },
+  { to: 'images/aod/font/steps', style: style(450, layout.aod.cap, grey, 0, SX.metric), items: digits() },
 ]
 
 const icon = (name: string): string => `art/icons/${name}.svg`
@@ -83,6 +85,10 @@ export default defineFace({
     { files: { blank: 'art/misc/blank.svg' }, to: 'images/misc', height: 4 },
   ],
   texts,
+  composites: ['steps', 'heart', 'battery'].map(name => ({
+    to: `images/edit/${name}.png`, width: 160, height: 48, background: '#000000',
+    items: [{ svg: icon(name === 'battery' ? 'bolt' : name), x: 66, y: 10, height: 28 }],
+  })),
   normalPreview: { to: 'images/preview.png', size: 324 },
   entries: {
     'app.js': 'src/app.ts',
