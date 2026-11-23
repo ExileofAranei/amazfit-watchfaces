@@ -42,6 +42,8 @@ export interface FaceConfig {
   assets: AssetSet[]
   texts?: TextSet[]
   composites?: Composite[]
+  /** Picker image rendered from the normal scene at build time. */
+  normalPreview?: { to: string; size: number }
   /** output js (relative to face dir) → TS entry */
   entries: Record<string, string>
 }

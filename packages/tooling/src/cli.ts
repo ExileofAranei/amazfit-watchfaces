@@ -53,8 +53,12 @@ function zeus(sub: string): void {
 }
 
 await assets()
+if (cmd !== 'assets' || config.normalPreview) await bundle()
+if (config.normalPreview) {
+  const root = join(faceDir, 'assets', config.assetsDir)
+  await mock(faceDir, root, join(root, config.normalPreview.to), undefined, false, config.normalPreview.size)
+}
 if (cmd === 'assets') process.exit(0)
-await bundle()
 if (cmd === 'bundle') process.exit(0)
 if (cmd === 'mock') {
   await mock(faceDir, join(faceDir, 'assets', config.assetsDir), join(faceDir, 'mock', 'preview.png'), undefined, process.argv.includes('--taps'))

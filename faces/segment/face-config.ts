@@ -67,16 +67,6 @@ const icon = (name: string): string => `art/icons/${name}.svg`
 const weatherMap: Record<string, string> = (await import('./art/icons/weather-map.json', { with: { type: 'json' } })).default
 const weatherFiles = Object.fromEntries(Object.entries(weatherMap).map(([code, p]) => [code, `art/${p}`]))
 
-/** Preview: "21:05" on black, 324×324 (Active Max watchface preview size per device list). */
-const PH = 96
-const dw = (h: number, vw: number) => Math.round((vw * h) / 295)
-let px = 26
-const previewItems = ['2', '1', 'colon', '0', '5'].map((d) => {
-  const item = { svg: `art/time/normal/${d}.svg`, x: px, y: (324 - PH) / 2, height: PH }
-  px += dw(PH, d === 'colon' ? 78 : 186) + 6
-  return item
-})
-
 export default defineFace({
   assetsDir: 'active-max',
   assets: [
@@ -93,10 +83,7 @@ export default defineFace({
     { files: { blank: 'art/misc/blank.svg' }, to: 'images/misc', height: 4 },
   ],
   texts,
-  composites: [
-    { to: 'images/preview.png', width: 324, height: 324, background: '#000000', items: previewItems },
-    { to: 'images/edit/steps.png', width: 160, height: 48, background: '#000000', items: [{ svg: icon('steps'), x: 67, y: 11, height: 26 }] },
-  ],
+  normalPreview: { to: 'images/preview.png', size: 324 },
   entries: {
     'app.js': 'src/app.ts',
     'watchface/index.js': 'src/watchface.ts',

@@ -87,11 +87,11 @@ function aodStepsEnabled(lang: Language): boolean {
   const group = ui.createWidget(ui.widget.WATCHFACE_EDIT_GROUP, {
     edit_id: 1, x: 160, y: 368, w: 160, h: 48,
     select_image: `${dir}/frame.png`, un_select_image: `${dir}/frame.png`,
-    tips_BG: `${dir}/tip.png`, tips_x: 0, tips_y: -50, tips_width: 160,
+    tips_BG: `${dir}/tip.png`, tips_x: -22, tips_y: -54, tips_width: 204,
     default_type: off,
     optional_types: [
-      { type: off, preview: `${dir}/off.png`, title_en: lang === 'ru' ? 'AOD: Выкл.' : 'AOD: Off', title_sc: 'AOD: Off', title_tc: 'AOD: Off' },
-      { type: steps, preview: `${dir}/steps.png`, title_en: lang === 'ru' ? 'AOD: Шаги' : 'AOD: Steps', title_sc: 'AOD: Steps', title_tc: 'AOD: Steps' },
+      { type: off, preview: `${dir}/off.png`, title_en: lang === 'ru' ? 'Шаги: выкл.' : 'Steps: off', title_sc: 'Steps: off', title_tc: 'Steps: off' },
+      { type: steps, preview: `${dir}/steps.png`, title_en: lang === 'ru' ? 'Шаги: вкл.' : 'Steps: on', title_sc: 'Steps: on', title_tc: 'Steps: on' },
     ],
     count: 2,
   })
@@ -164,7 +164,7 @@ WatchFace({
         showLevel: NORMAL,
         seconds: { digitsDir: 'images/time/seconds', x: seconds.x, y: seconds.y, space: seconds.space },
       },
-      { digitsDir: 'images/time/aod', x: aod.x, y: aod.y, space: aod.space, showLevel: AOD },
+      { digitsDir: 'images/time/aod', x: aod.x, y: aod.y, space: aod.space, showLevel: AOD | ui.show_level.ONLY_EDIT },
     ])
     const lang = getLanguage() === RUSSIAN_LANGUAGE_CODE ? 'ru' : 'en'
     buildNormal(lang)

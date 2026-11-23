@@ -92,7 +92,7 @@ async function record(faceDir: string, assetsRoot: string, sample: Sample): Prom
   return calls
 }
 
-export async function mock(faceDir: string, assetsRoot: string, outFile: string, sample = DM_SAMPLE, debugTaps = false): Promise<void> {
+export async function mock(faceDir: string, assetsRoot: string, outFile: string, sample = DM_SAMPLE, debugTaps = false, normalPreviewSize?: number): Promise<void> {
   const calls = await record(faceDir, assetsRoot, sample)
   const size = (p: string): [number, number] => {
     const b = readFileSync(join(assetsRoot, p))
@@ -171,7 +171,9 @@ export async function mock(faceDir: string, assetsRoot: string, outFile: string,
   }
   const face = (body: string, ox: number) =>
     `<g transform="translate(${ox},0)"><circle cx="240" cy="240" r="240" fill="#000"/><g clip-path="url(#c)">${body}</g></g>`
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="480"><defs><clipPath id="c"><circle cx="240" cy="240" r="240"/></clipPath></defs><rect width="1000" height="480" fill="#1c1c22"/>${face(scene(LEVEL.ONLY_NORMAL), 0)}${face(scene(LEVEL.ONAL_AOD), 520)}</svg>`
+  const svg = normalPreviewSize
+    ? `<svg xmlns="http://www.w3.org/2000/svg" width="${normalPreviewSize}" height="${normalPreviewSize}" viewBox="0 0 480 480"><rect width="480" height="480" fill="#000"/>${scene(LEVEL.ONLY_NORMAL)}</svg>`
+    : `<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="480"><defs><clipPath id="c"><circle cx="240" cy="240" r="240"/></clipPath></defs><rect width="1000" height="480" fill="#1c1c22"/>${face(scene(LEVEL.ONLY_NORMAL), 0)}${face(scene(LEVEL.ONAL_AOD), 520)}</svg>`
   mkdirSync(dirname(outFile), { recursive: true })
   writeFileSync(outFile, new Resvg(svg).render().asPng())
 }
