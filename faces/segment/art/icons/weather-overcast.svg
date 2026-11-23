@@ -1,4 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="52.8" height="44.6" viewBox="0 0 52.8 44.6">
-  <title>Пасмурно</title>
-  <g fill="none" stroke="#F6F5FC" stroke-width="1.51997671" stroke-linecap="round" stroke-linejoin="round" transform="translate(-3.78728553 -6.53196701) scale(1.97371446)"><path d="M9 10a6 6 0 0 1 10.5-3.7 5 5 0 0 1 7.5 2.4M7 25a4.7 4.7 0 1 1 .8-9.4 6.7 6.7 0 0 1 12.3-.6A5.3 5.3 0 1 1 22 25H7Z" /></g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="52.8" height="44.6" viewBox="0 0 52.8 44.6"><title>Пасмурно</title><g fill="#F6F5FC" transform="translate(0.3000 0.3000)"><g transform="translate(0 1)"><path d="M23 15.5a5.15 5.15 0 0 1-.8-10.2 7.05 7.05 0 0 1 12.4-1.4 7.5 7.5 0 0 1 13.3 2.6 4.65 4.65 0 0 1-1.9 9Z"/></g><g transform="translate(0 9)"><path d="M9.1 33.2a7.8 7.8 0 0 1-.4-15.59 8.3 8.3 0 0 1 14-4.58 9.1 9.1 0 0 1 15.7 4.4 7.9 7.9 0 0 1-.8 15.77Z"/></g></g></svg>
