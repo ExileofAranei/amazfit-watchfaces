@@ -8,8 +8,9 @@ export const layout = {
     normal: { height: 108, x: 49.3, y: 187.5, space: 6.5 },
     seconds: { height: 47.4, x: 390.8, y: 246.9, space: 7.3 },
     /** AOD time is set in Orbitron 400 (proportional, narrow 1) and centred by code; y is the cap top.
-     * cap 78 is the widest that fits: 08:08 is ~398 px wide. */
-    aod: { cx: 240, y: 201, cap: 78, gap: 4 },
+     * cap 78 is the widest that fits: 08:08 is ~404 px wide. y centres it between the weekday (bottom 112)
+     * and the steps (top 404): 107 px of air above and below. */
+    aod: { cx: 240, y: 219, cap: 78, gap: 4 },
   },
   month: { cx: 241.5, y: 31.6, cap: 16.5, boxW: 220 },
   weekday: { cx: 241.5, y: 131.4, cap: 16.5, boxW: 260 },
